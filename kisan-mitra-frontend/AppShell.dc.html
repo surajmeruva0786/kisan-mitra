@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @keyframes kmTyping { 0%,60%,100%{ transform:translateY(0); opacity:0.5; } 30%{ transform:translateY(-4px); opacity:1; } }
+    @keyframes kmPulseRing { 0%{ box-shadow:0 0 0 0 rgba(239,68,68,0.4); } 100%{ box-shadow:0 0 0 10px rgba(239,68,68,0); } }
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-thumb { background:#D1D5DB; border-radius:999px; }
+  </style>
+</helmet>
+<div style="display:flex; width:100%; height:100%; min-height:100%; background:#FAFAFB; overflow:hidden;">
+
+  <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+    <aside style="width:236px; flex-shrink:0; background:#fff; border-right:1px solid #E5E7EB; display:flex; flex-direction:column; padding:20px 14px;">
+      <div style="display:flex; align-items:center; gap:9px; padding:6px 8px 22px;">
+        <svg width="24" height="24" viewBox="0 0 64 64" fill="none">
+          <g transform="translate(32, 32)"><circle cx="0" cy="0" r="26" stroke="#7C3AED" stroke-width="4.5" fill="none"></circle><path d="M-22,-18 A34,34 0 0,1 22,-18" stroke="url(#sbM)" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="0" cy="0" r="4.5" fill="#7C3AED"></circle></g>
+          <defs><linearGradient id="sbM" x1="10" y1="14" x2="54" y2="14"><stop offset="0%" stop-color="#A78BFA"></stop><stop offset="100%" stop-color="#6D28D9"></stop></linearGradient></defs>
+        </svg>
+        <span style="font-family:'Instrument Sans',sans-serif; font-weight:700; font-size:15px; color:#1A1625;">{{ data.strings.appName }}</span>
+      </div>
+
+      <nav style="display:flex; flex-direction:column; gap:2px;">
+        <button onClick="{{ data.nav.chat.onNavigate }}" style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:12px; border:none; background:{{ data.nav.chat.bgColor }}; cursor:pointer; text-align:left;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.chat.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
+          <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:{{ data.nav.chat.textColor }};">{{ data.nav.chat.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.schemes.onNavigate }}" style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:12px; border:none; background:{{ data.nav.schemes.bgColor }}; cursor:pointer; text-align:left;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.schemes.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"></line><line x1="6" x2="6" y1="18" y2="11"></line><line x1="10" x2="10" y1="18" y2="11"></line><line x1="14" x2="14" y1="18" y2="11"></line><line x1="18" x2="18" y1="18" y2="11"></line><polygon points="12 2 20 7 4 7"></polygon></svg>
+          <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:{{ data.nav.schemes.textColor }};">{{ data.nav.schemes.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.calendar.onNavigate }}" style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:12px; border:none; background:{{ data.nav.calendar.bgColor }}; cursor:pointer; text-align:left;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.calendar.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+          <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:{{ data.nav.calendar.textColor }};">{{ data.nav.calendar.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.prices.onNavigate }}" style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:12px; border:none; background:{{ data.nav.prices.bgColor }}; cursor:pointer; text-align:left;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.prices.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+          <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:{{ data.nav.prices.textColor }};">{{ data.nav.prices.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.weather.onNavigate }}" style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:12px; border:none; background:{{ data.nav.weather.bgColor }}; cursor:pointer; text-align:left;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.weather.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"></path><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"></path></svg>
+          <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:{{ data.nav.weather.textColor }};">{{ data.nav.weather.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.settings.onNavigate }}" style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:12px; border:none; background:{{ data.nav.settings.bgColor }}; cursor:pointer; text-align:left;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.settings.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:{{ data.nav.settings.textColor }};">{{ data.nav.settings.label }}</span>
+        </button>
+      </nav>
+
+      <div style="flex:1;"></div>
+      <div style="border-top:1px solid #F3F4F6; padding-top:14px; display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <img src="assets/orbis-logo-light.svg" alt="Orbis Systems" style="height:14px; opacity:0.55;"/>
+        <span style="font-size:10.5px; color:#9CA3AF; font-weight:500;">{{ data.strings.poweredBy }}</span>
+      </div>
+    </aside>
+  </sc-if>
+
+  <div style="flex:1; display:flex; flex-direction:column; min-width:0; height:100%;">
+    <header style="display:flex; align-items:center; justify-content:space-between; padding:16px 22px; border-bottom:1px solid #E5E7EB; background:#fff; flex-shrink:0;">
+      <h1 style="font-family:'Instrument Sans',sans-serif; font-size:calc(19px * var(--fs-mult,1)); font-weight:700; color:#1A1625; margin:0;">{{ data.strings.screenTitle }}</h1>
+      <button onClick="{{ data.nav.settings.onNavigate }}" style="display:flex; align-items:center; gap:6px; background:#F5F3FF; border:none; padding:7px 12px; border-radius:999px; cursor:pointer;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6D28D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+        <span style="font-size:12.5px; font-weight:600; color:#6D28D9; font-family:'DM Sans',sans-serif;">{{ data.strings.currentLanguageNative }}</span>
+      </button>
+    </header>
+
+    <div style="flex:1; overflow-y:auto; min-height:0;">
+
+      <sc-if value="{{ data.isChat }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; height:100%;">
+          <div style="flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px;">
+            <sc-for list="{{ data.chat.messages }}" as="msg" hint-placeholder-count="1">
+              <sc-if value="{{ msg.isBot }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; gap:8px; align-items:flex-start; max-width:78%;">
+                  <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="flex-shrink:0; margin-top:2px;"><g transform="translate(32, 32)"><circle cx="0" cy="0" r="26" stroke="#7C3AED" stroke-width="5" fill="none"></circle><path d="M-22,-18 A34,34 0 0,1 22,-18" stroke="#A78BFA" stroke-width="5" stroke-linecap="round" fill="none"></path><circle cx="0" cy="0" r="5" fill="#7C3AED"></circle></g></svg>
+                  <div style="background:#fff; border:1px solid #E5E7EB; border-radius:4px 14px 14px 14px; padding:11px 14px;">
+                    <sc-if value="{{ msg.isText }}" hint-placeholder-val="{{ true }}"><p style="margin:0; font-size:calc(14.5px * var(--fs-mult,1)); color:#1A1625; line-height:1.5;">{{ msg.text }}</p></sc-if>
+                    <sc-if value="{{ msg.isList }}" hint-placeholder-val="{{ false }}">
+                      <p style="margin:0 0 6px; font-size:calc(14.5px * var(--fs-mult,1)); color:#1A1625;">{{ msg.text }}</p>
+                      <sc-for list="{{ msg.items }}" as="li" hint-placeholder-count="2">
+                        <div style="display:flex; gap:6px; font-size:calc(13.5px * var(--fs-mult,1)); color:#374151; margin-top:3px;"><span>&bull;</span><span>{{ li.text }}</span></div>
+                      </sc-for>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ msg.isUser }}" hint-placeholder-val="{{ false }}">
+                <div style="align-self:flex-end; max-width:78%; background:linear-gradient(90deg,#4F46E5,#7C3AED); border-radius:14px 4px 14px 14px; padding:11px 14px;">
+                  <p style="margin:0; font-size:calc(14.5px * var(--fs-mult,1)); color:#fff; line-height:1.5;">{{ msg.text }}</p>
+                </div>
+              </sc-if>
+            </sc-for>
+            <sc-if value="{{ data.chat.typing }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; gap:4px; padding:12px 14px; background:#fff; border:1px solid #E5E7EB; border-radius:14px; width:fit-content;">
+                <div style="width:6px; height:6px; border-radius:999px; background:#9CA3AF; animation:kmTyping 1s infinite;"></div>
+                <div style="width:6px; height:6px; border-radius:999px; background:#9CA3AF; animation:kmTyping 1s infinite 0.15s;"></div>
+                <div style="width:6px; height:6px; border-radius:999px; background:#9CA3AF; animation:kmTyping 1s infinite 0.3s;"></div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex; gap:8px; padding:10px 14px; overflow-x:auto; flex-shrink:0;">
+            <sc-for list="{{ data.chat.quickActions }}" as="qa" hint-placeholder-count="5">
+              <button onClick="{{ qa.onSend }}" style="white-space:nowrap; padding:9px 14px; border-radius:999px; border:1px solid #DDD6FE; background:#F5F3FF; color:#6D28D9; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; flex-shrink:0;">{{ qa.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; padding:10px 14px 14px; border-top:1px solid #E5E7EB; flex-shrink:0;">
+            <input value="{{ data.chat.draft }}" onChange="{{ data.chat.onDraftChange }}" onKeyDown="{{ data.chat.onDraftKeyDown }}" placeholder="{{ data.strings.typeMessage }}" style="flex:1; min-width:0; padding:12px 16px; border-radius:999px; border:1px solid #E5E7EB; font-size:14px; font-family:'DM Sans',sans-serif; color:#1A1625;"/>
+            <button onClick="{{ data.chat.onToggleMic }}" style="width:42px; height:42px; border-radius:999px; border:none; background:{{ data.chat.micBg }}; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{ data.chat.micColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
+            </button>
+            <button onClick="{{ data.chat.onSend }}" style="width:42px; height:42px; border-radius:999px; border:none; background:linear-gradient(90deg,#4F46E5,#7C3AED); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+            </button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ data.isSchemes }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px;">
+          <sc-if value="{{ data.schemes.hasSelection }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ data.schemes.selected.onClose }}" style="display:flex; align-items:center; gap:6px; background:none; border:none; color:#6D28D9; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; padding:0 0 14px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6D28D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>{{ data.strings.backLabel }}
+            </button>
+            <div style="background:#fff; border:1px solid #E5E7EB; border-radius:20px; padding:22px;">
+              <span style="display:inline-block; background:#F5F3FF; color:#6D28D9; font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; margin-bottom:10px;">{{ data.schemes.selected.levelLabel }}</span>
+              <h2 style="font-family:'Instrument Sans',sans-serif; font-size:20px; font-weight:700; color:#1A1625; margin:0 0 10px;">{{ data.schemes.selected.name }}</h2>
+              <div style="background:#F5F3FF; border-radius:14px; padding:14px; margin-bottom:18px;">
+                <div style="font-size:11px; font-weight:700; color:#6D28D9; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">{{ data.strings.benefitLabel }}</div>
+                <p style="margin:0; font-size:14.5px; color:#1A1625; line-height:1.5;">{{ data.schemes.selected.benefit }}</p>
+              </div>
+              <div style="font-size:13px; font-weight:700; color:#374151; margin-bottom:8px;">{{ data.strings.eligibilityLabel }}</div>
+              <sc-for list="{{ data.schemes.selected.eligibility }}" as="el" hint-placeholder-count="3">
+                <div style="display:flex; gap:8px; margin-bottom:8px; align-items:flex-start;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+                  <span style="font-size:13.5px; color:#374151; line-height:1.5;">{{ el.text }}</span>
+                </div>
+              </sc-for>
+              <div style="font-size:13px; font-weight:700; color:#374151; margin:14px 0 8px;">{{ data.strings.howToApplyLabel }}</div>
+              <sc-for list="{{ data.schemes.selected.steps }}" as="st" hint-placeholder-count="4">
+                <div style="display:flex; gap:8px; margin-bottom:8px; align-items:flex-start;">
+                  <span style="font-size:12px; font-weight:700; color:#7C3AED; flex-shrink:0;">{{ st.num }}.</span>
+                  <span style="font-size:13.5px; color:#374151; line-height:1.5;">{{ st.text }}</span>
+                </div>
+              </sc-for>
+              <div style="font-size:13px; font-weight:700; color:#374151; margin:14px 0 8px;">{{ data.strings.documentsLabel }}</div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px;">
+                <sc-for list="{{ data.schemes.selected.documents }}" as="doc" hint-placeholder-count="3">
+                  <span style="background:#F3F4F6; color:#374151; font-size:12px; font-weight:600; padding:6px 10px; border-radius:999px;">{{ doc.text }}</span>
+                </sc-for>
+              </div>
+              <a href="tel:{{ data.schemes.selected.helpline }}" style="display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(90deg,#4F46E5,#7C3AED); color:#fff; text-decoration:none; padding:13px; border-radius:12px; font-size:14px; font-weight:600; font-family:'DM Sans',sans-serif;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384z"></path></svg>
+                {{ data.strings.call }} {{ data.schemes.selected.helpline }}
+              </a>
+            </div>
+          </sc-if>
+          <sc-if value="{{ data.schemes.noSelection }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:16px;">
+              <sc-for list="{{ data.schemes.filters }}" as="f" hint-placeholder-count="4">
+                <button onClick="{{ f.onSelect }}" style="white-space:nowrap; padding:8px 14px; border-radius:999px; border:none; background:{{ f.bgColor }}; color:{{ f.textColor }}; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; flex-shrink:0;">{{ f.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px;">
+              <sc-for list="{{ data.schemes.list }}" as="sch" hint-placeholder-count="4">
+                <div style="background:#fff; border:1px solid #E5E7EB; border-radius:18px; padding:18px; display:flex; flex-direction:column; gap:10px;">
+                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <div style="width:38px; height:38px; border-radius:11px; background:#F5F3FF; display:flex; align-items:center; justify-content:center;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"></line><line x1="6" x2="6" y1="18" y2="11"></line><line x1="10" x2="10" y1="18" y2="11"></line><line x1="14" x2="14" y1="18" y2="11"></line><line x1="18" x2="18" y1="18" y2="11"></line><polygon points="12 2 20 7 4 7"></polygon></svg>
+                    </div>
+                    <span style="font-size:10.5px; font-weight:700; color:#6B7280; background:#F3F4F6; padding:3px 9px; border-radius:999px;">{{ sch.levelLabel }}</span>
+                  </div>
+                  <h3 style="font-family:'Instrument Sans',sans-serif; font-size:15.5px; font-weight:700; color:#1A1625; margin:0;">{{ sch.name }}</h3>
+                  <p style="font-size:13px; color:#6B7280; line-height:1.5; margin:0; flex:1;">{{ sch.benefit }}</p>
+                  <button onClick="{{ sch.onOpen }}" style="background:#F5F3FF; color:#6D28D9; border:none; padding:10px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif;">{{ data.strings.viewDetails }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ data.isCalendar }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px;">
+          <p style="font-size:13px; color:#6B7280; margin:0 0 14px;">{{ data.strings.calendarSub }}</p>
+          <div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:22px;">
+            <sc-for list="{{ data.calendar.crops }}" as="crop" hint-placeholder-count="7">
+              <button onClick="{{ crop.onSelect }}" style="white-space:nowrap; padding:9px 15px; border-radius:999px; border:1.5px solid {{ crop.borderColor }}; background:{{ crop.bgColor }}; color:{{ crop.textColor }}; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; flex-shrink:0;">{{ crop.label }}</button>
+            </sc-for>
+          </div>
+          <div style="position:relative; padding-left:22px;">
+            <div style="position:absolute; left:7px; top:6px; bottom:6px; width:2px; background:#E5E7EB;"></div>
+            <sc-for list="{{ data.calendar.stages }}" as="stage" hint-placeholder-count="5">
+              <div style="position:relative; padding-bottom:22px;">
+                <div style="position:absolute; left:-22px; top:2px; width:16px; height:16px; border-radius:999px; background:#7C3AED; border:3px solid #F5F3FF;"></div>
+                <div style="background:#fff; border:1px solid #E5E7EB; border-radius:14px; padding:14px 16px;">
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                    <span style="font-family:'Instrument Sans',sans-serif; font-size:14.5px; font-weight:700; color:#1A1625;">{{ stage.name }}</span>
+                    <span style="font-size:11.5px; font-weight:700; color:#7C3AED; background:#F5F3FF; padding:3px 9px; border-radius:999px;">{{ stage.months }}</span>
+                  </div>
+                  <p style="margin:0; font-size:13px; color:#6B7280; line-height:1.5;">{{ stage.tip }}</p>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ data.isPrices }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px;">
+          <sc-if value="{{ data.prices.noSelection }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; align-items:center; gap:8px; background:#fff; border:1px solid #E5E7EB; border-radius:999px; padding:10px 16px; margin-bottom:16px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+              <input value="{{ data.prices.search }}" onChange="{{ data.prices.onSearchChange }}" placeholder="{{ data.strings.searchPlaceholder }}" style="border:none; outline:none; flex:1; font-size:13.5px; font-family:'DM Sans',sans-serif; color:#1A1625;"/>
+            </div>
+            <p style="font-size:11.5px; color:#9CA3AF; margin:0 0 12px;">{{ data.strings.lastUpdated }}</p>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <sc-for list="{{ data.prices.rows }}" as="row" hint-placeholder-count="7">
+                <button onClick="{{ row.onOpen }}" style="display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E5E7EB; border-radius:14px; padding:14px 16px; cursor:pointer; text-align:left;">
+                  <div>
+                    <div style="font-size:14px; font-weight:700; color:#1A1625;">{{ row.crop }}</div>
+                    <div style="font-size:12px; color:#9CA3AF;">{{ row.market }}</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-size:14.5px; font-weight:700; color:#1A1625;">{{ row.price }}{{ data.strings.perQuintal }}</div>
+                    <sc-if value="{{ row.isUp }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px; font-weight:600; color:#10B981;">{{ row.changeLabel }}</div></sc-if>
+                    <sc-if value="{{ row.isDown }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px; font-weight:600; color:#EF4444;">{{ row.changeLabel }}</div></sc-if>
+                    <sc-if value="{{ row.isFlat }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px; font-weight:600; color:#9CA3AF;">{{ row.changeLabel }}</div></sc-if>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ data.prices.hasSelection }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ data.prices.selected.onClose }}" style="display:flex; align-items:center; gap:6px; background:none; border:none; color:#6D28D9; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; padding:0 0 14px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6D28D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>{{ data.strings.backLabel }}
+            </button>
+            <div style="background:#fff; border:1px solid #E5E7EB; border-radius:20px; padding:22px;">
+              <div style="font-size:14px; font-weight:700; color:#1A1625;">{{ data.prices.selected.crop }}</div>
+              <div style="font-size:12.5px; color:#9CA3AF; margin-bottom:14px;">{{ data.prices.selected.market }}</div>
+              <div style="font-size:30px; font-weight:700; color:#1A1625; font-family:'Instrument Sans',sans-serif; margin-bottom:16px;">{{ data.prices.selected.price }}{{ data.strings.perQuintal }}</div>
+              <div style="display:flex; align-items:flex-end; gap:5px; height:70px; margin-bottom:20px;">
+                <sc-for list="{{ data.prices.selected.history }}" as="bar" hint-placeholder-count="7">
+                  <div style="flex:1; background:#DDD6FE; border-radius:4px 4px 0 0; height:{{ bar.h }}%;"></div>
+                </sc-for>
+              </div>
+              <div style="font-size:13px; font-weight:700; color:#374151; margin-bottom:8px;">{{ data.strings.nearbyMarkets }}</div>
+              <sc-for list="{{ data.prices.selected.nearby }}" as="nb" hint-placeholder-count="2">
+                <div style="display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid #F3F4F6;">
+                  <span style="font-size:13.5px; color:#374151;">{{ nb.market }}</span>
+                  <span style="font-size:13.5px; font-weight:600; color:#1A1625;">{{ nb.price }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ data.isWeather }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px;">
+          <sc-if value="{{ data.weather.hasAlert }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; gap:10px; align-items:flex-start; background:#FFFBEB; border:1px solid #FDE68A; border-radius:14px; padding:14px; margin-bottom:16px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+              <p style="margin:0; font-size:13px; color:#92400E; line-height:1.5;">{{ data.weather.alertText }}</p>
+            </div>
+          </sc-if>
+          <div style="background:linear-gradient(135deg,#4F46E5,#7C3AED); border-radius:20px; padding:22px; color:#fff; margin-bottom:16px;">
+            <div style="font-size:13px; opacity:0.85; margin-bottom:2px;">{{ data.weather.location }}</div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div style="font-family:'Instrument Sans',sans-serif; font-size:44px; font-weight:700;">{{ data.weather.temp }}°</div>
+              <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"></path><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"></path></svg>
+            </div>
+            <div style="font-size:14px; opacity:0.9; margin-bottom:14px;">{{ data.weather.conditionLabel }}</div>
+            <div style="display:flex; gap:20px; border-top:1px solid rgba(255,255,255,0.25); padding-top:12px;">
+              <div><div style="font-size:11px; opacity:0.75;">{{ data.strings.humidityLabel }}</div><div style="font-size:15px; font-weight:700;">{{ data.weather.humidity }}%</div></div>
+              <div><div style="font-size:11px; opacity:0.75;">{{ data.strings.windLabel }}</div><div style="font-size:15px; font-weight:700;">{{ data.weather.wind }} km/h</div></div>
+            </div>
+          </div>
+          <div style="font-size:13px; font-weight:700; color:#374151; margin-bottom:10px;">{{ data.strings.forecastTitle }}</div>
+          <div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:20px;">
+            <sc-for list="{{ data.weather.forecast }}" as="f" hint-placeholder-count="7">
+              <div style="flex-shrink:0; width:64px; background:#fff; border:1px solid #E5E7EB; border-radius:14px; padding:12px 8px; text-align:center;">
+                <div style="font-size:11.5px; font-weight:700; color:#374151; margin-bottom:6px;">{{ f.day }}</div>
+                <sc-if value="{{ f.isSunny }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></sc-if>
+                <sc-if value="{{ f.isCloudy }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h.79a4.5 4.5 0 1 1 0 9Z"></path></svg></sc-if>
+                <sc-if value="{{ f.isRainy }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><path d="M17.5 15H9a7 7 0 1 1 6.71-9h.79a4.5 4.5 0 1 1 0 9Z"></path><path d="M8 19v2"></path><path d="M12 19v3"></path><path d="M16 19v2"></path></svg></sc-if>
+                <sc-if value="{{ f.isPartly }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><path d="M12 2v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"></path><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"></path></svg></sc-if>
+                <div style="font-size:12.5px; font-weight:700; color:#1A1625; margin-top:6px;">{{ f.high }}°</div>
+                <div style="font-size:11px; color:#9CA3AF;">{{ f.low }}°</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-size:13px; font-weight:700; color:#374151; margin-bottom:10px;">{{ data.strings.advisoryTitle }}</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <sc-for list="{{ data.weather.advisories }}" as="adv" hint-placeholder-count="3">
+              <div style="display:flex; gap:10px; background:#fff; border:1px solid #E5E7EB; border-radius:14px; padding:12px 14px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"></path></svg>
+                <p style="margin:0; font-size:13px; color:#374151; line-height:1.5;">{{ adv.text }}</p>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ data.isSettings }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px; display:flex; flex-direction:column; gap:16px;">
+
+          <div style="background:#fff; border:1px solid #E5E7EB; border-radius:16px; padding:16px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+              <span style="font-size:12px; font-weight:700; color:#9CA3AF; text-transform:uppercase; letter-spacing:0.05em;">{{ data.strings.profileSection }}</span>
+              <button onClick="{{ data.settings.onEditProfile }}" style="background:#F5F3FF; color:#6D28D9; border:none; padding:6px 12px; border-radius:999px; font-size:12px; font-weight:600; cursor:pointer;">{{ data.strings.editProfile }}</button>
+            </div>
+            <div style="font-size:16px; font-weight:700; color:#1A1625; margin-bottom:2px;">{{ data.settings.profileName }}</div>
+            <div style="font-size:13px; color:#6B7280; margin-bottom:8px;">{{ data.settings.profileLocation }}</div>
+            <div style="display:flex; gap:12px; font-size:12.5px; color:#374151;">
+              <span>{{ data.settings.profileCrops }}</span>
+              <span>&middot;</span>
+              <span>{{ data.settings.profileLand }}</span>
+            </div>
+          </div>
+
+          <div style="background:#fff; border:1px solid #E5E7EB; border-radius:16px; padding:16px;">
+            <span style="font-size:12px; font-weight:700; color:#9CA3AF; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:12px;">{{ data.strings.languageSection }}</span>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:8px;">
+              <sc-for list="{{ data.settings.languages }}" as="lg" hint-placeholder-count="12">
+                <button onClick="{{ lg.onSelect }}" style="display:flex; flex-direction:column; align-items:center; gap:1px; padding:10px 4px; border-radius:11px; border:1.5px solid {{ lg.borderColor }}; background:{{ lg.bgColor }}; cursor:pointer;">
+                  <span style="font-size:13.5px; font-weight:600; color:#1A1625;">{{ lg.native }}</span>
+                  <span style="font-size:9.5px; color:#9CA3AF;">{{ lg.en }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background:#fff; border:1px solid #E5E7EB; border-radius:16px; padding:16px;">
+            <span style="font-size:12px; font-weight:700; color:#9CA3AF; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:12px;">{{ data.strings.accessibilitySection }}</span>
+            <div style="font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">{{ data.strings.textSizeLabel }}</div>
+            <div style="display:flex; gap:8px; margin-bottom:16px;">
+              <sc-for list="{{ data.settings.textSizeOptions }}" as="opt" hint-placeholder-count="3">
+                <button onClick="{{ opt.onSelect }}" style="flex:1; padding:10px 6px; border-radius:10px; border:1.5px solid {{ opt.borderColor }}; background:{{ opt.bgColor }}; cursor:pointer; font-size:12.5px; font-weight:600; color:#374151;">{{ opt.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-top:1px solid #F3F4F6;">
+              <span style="font-size:13.5px; font-weight:600; color:#1A1625;">{{ data.strings.highContrastLabel }}</span>
+              <div onClick="{{ data.settings.onToggleHighContrast }}" style="width:44px; height:24px; border-radius:999px; background:{{ data.settings.highContrastTrackBg }}; position:relative; cursor:pointer; flex-shrink:0;">
+                <div style="position:absolute; top:2px; left:{{ data.settings.highContrastKnobLeft }}; width:20px; height:20px; border-radius:999px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.25); transition:left 180ms;"></div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-top:1px solid #F3F4F6;">
+              <span style="font-size:13.5px; font-weight:600; color:#1A1625;">{{ data.strings.voiceAssistLabel }}</span>
+              <div onClick="{{ data.settings.onToggleVoiceAssist }}" style="width:44px; height:24px; border-radius:999px; background:{{ data.settings.voiceAssistTrackBg }}; position:relative; cursor:pointer; flex-shrink:0;">
+                <div style="position:absolute; top:2px; left:{{ data.settings.voiceAssistKnobLeft }}; width:20px; height:20px; border-radius:999px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.25); transition:left 180ms;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#fff; border:1px solid #E5E7EB; border-radius:16px; padding:16px;">
+            <span style="font-size:12px; font-weight:700; color:#9CA3AF; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:12px;">{{ data.strings.notificationsSection }}</span>
+            <sc-for list="{{ data.settings.notifications }}" as="nf" hint-placeholder-count="3">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-top:1px solid #F3F4F6;">
+                <span style="font-size:13.5px; font-weight:600; color:#1A1625;">{{ nf.label }}</span>
+                <div onClick="{{ nf.onToggle }}" style="width:44px; height:24px; border-radius:999px; background:{{ nf.trackBg }}; position:relative; cursor:pointer; flex-shrink:0;">
+                  <div style="position:absolute; top:2px; left:{{ nf.knobLeft }}; width:20px; height:20px; border-radius:999px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.25); transition:left 180ms;"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#fff; border:1px solid #E5E7EB; border-radius:16px; padding:16px;">
+            <span style="font-size:12px; font-weight:700; color:#9CA3AF; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:12px;">{{ data.strings.helpSection }}</span>
+            <a href="tel:{{ data.settings.helpline }}" style="display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(90deg,#4F46E5,#7C3AED); color:#fff; text-decoration:none; padding:13px; border-radius:12px; font-size:14px; font-weight:600; font-family:'DM Sans',sans-serif; margin-bottom:10px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384z"></path></svg>
+              {{ data.strings.callHelpline }} &middot; {{ data.settings.helpline }}
+            </a>
+            <button onClick="{{ data.settings.onReplayOnboarding }}" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; background:#F3F4F6; color:#374151; border:none; padding:13px; border-radius:12px; font-size:14px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+              {{ data.strings.replayOnboarding }}
+            </button>
+          </div>
+
+          <div style="text-align:center; padding:8px 0 4px;">
+            <img src="assets/orbis-logo-light.svg" alt="Orbis Systems" style="height:16px; opacity:0.6; margin-bottom:8px;"/>
+            <div style="font-size:11.5px; color:#9CA3AF;">{{ data.strings.poweredBy }}</div>
+            <div style="font-size:11px; color:#D1D5DB; margin-top:2px;">{{ data.strings.version }}</div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <nav style="display:flex; border-top:1px solid #E5E7EB; background:#fff; flex-shrink:0;">
+        <button onClick="{{ data.nav.chat.onNavigate }}" style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:9px 2px 10px; border:none; background:none; cursor:pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.chat.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
+          <span style="font-size:10px; font-weight:600; color:{{ data.nav.chat.textColor }};">{{ data.nav.chat.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.schemes.onNavigate }}" style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:9px 2px 10px; border:none; background:none; cursor:pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.schemes.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"></line><line x1="6" x2="6" y1="18" y2="11"></line><line x1="10" x2="10" y1="18" y2="11"></line><line x1="14" x2="14" y1="18" y2="11"></line><line x1="18" x2="18" y1="18" y2="11"></line><polygon points="12 2 20 7 4 7"></polygon></svg>
+          <span style="font-size:10px; font-weight:600; color:{{ data.nav.schemes.textColor }};">{{ data.nav.schemes.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.calendar.onNavigate }}" style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:9px 2px 10px; border:none; background:none; cursor:pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.calendar.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+          <span style="font-size:10px; font-weight:600; color:{{ data.nav.calendar.textColor }};">{{ data.nav.calendar.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.prices.onNavigate }}" style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:9px 2px 10px; border:none; background:none; cursor:pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.prices.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+          <span style="font-size:10px; font-weight:600; color:{{ data.nav.prices.textColor }};">{{ data.nav.prices.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.weather.onNavigate }}" style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:9px 2px 10px; border:none; background:none; cursor:pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.weather.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"></path><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"></path></svg>
+          <span style="font-size:10px; font-weight:600; color:{{ data.nav.weather.textColor }};">{{ data.nav.weather.label }}</span>
+        </button>
+        <button onClick="{{ data.nav.settings.onNavigate }}" style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:9px 2px 10px; border:none; background:none; cursor:pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ data.nav.settings.textColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <span style="font-size:10px; font-weight:600; color:{{ data.nav.settings.textColor }};">{{ data.nav.settings.label }}</span>
+        </button>
+      </nav>
+    </sc-if>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

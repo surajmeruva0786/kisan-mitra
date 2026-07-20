@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @keyframes obFadeUp { from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:translateY(0); } }
+  </style>
+</helmet>
+<div style="width:100%; min-height:100%; display:flex; flex-direction:column; align-items:center; box-sizing:border-box; padding:28px 20px 48px; background:#FAFAFB;">
+
+  <div style="width:100%; max-width:480px; display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; min-height:24px;">
+    <div style="display:flex; gap:7px;">
+      <sc-for list="{{ data.dots }}" as="dot" hint-placeholder-count="5">
+        <div style="width:8px; height:8px; border-radius:999px; background:{{ dot.bg }};"></div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ data.showSkip }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ actions.skip }}" style="background:none; border:none; color:#9CA3AF; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; padding:6px;">{{ data.strings.skip }}</button>
+    </sc-if>
+  </div>
+
+  <div style="width:100%; max-width:480px; flex:1; display:flex; flex-direction:column; justify-content:center;">
+
+    <sc-if value="{{ data.isStep0 }}" hint-placeholder-val="{{ true }}">
+      <div style="text-align:center; animation:obFadeUp 480ms ease-out;">
+        <div style="display:flex; justify-content:center; margin-bottom:22px;">
+          <svg width="84" height="84" viewBox="0 0 64 64" fill="none">
+            <g transform="translate(32, 32)">
+              <circle cx="0" cy="0" r="26" stroke="#7C3AED" stroke-width="4.5" fill="none"></circle>
+              <path d="M-22,-18 A34,34 0 0,1 22,-18" stroke="url(#obM0)" stroke-width="4" stroke-linecap="round" fill="none"></path>
+              <circle cx="0" cy="0" r="4.5" fill="#7C3AED"></circle>
+            </g>
+            <defs><linearGradient id="obM0" x1="10" y1="14" x2="54" y2="14"><stop offset="0%" stop-color="#A78BFA"></stop><stop offset="100%" stop-color="#6D28D9"></stop></linearGradient></defs>
+          </svg>
+        </div>
+        <h1 style="font-family:'Instrument Sans',sans-serif; font-size:clamp(26px,6vw,38px); font-weight:700; letter-spacing:-0.02em; color:#1A1625; margin:0 0 8px;">{{ data.strings.appName }}</h1>
+        <p style="font-size:calc(16px * var(--fs-mult,1)); color:#4B5563; margin:0 0 6px; line-height:1.5;">{{ data.strings.tagline }}</p>
+        <p style="font-size:13px; color:#9CA3AF; margin:0 0 32px;">Welcome &middot; స్వాగతం &middot; स्वागत है</p>
+        <button onClick="{{ actions.next }}" style="background:linear-gradient(90deg,#4F46E5,#7C3AED); color:#fff; border:none; padding:16px 40px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:600; cursor:pointer; box-shadow:0 12px 32px -8px rgba(124,58,237,0.35);">{{ data.strings.getStarted }}</button>
+        <p style="font-size:12px; color:#9CA3AF; margin-top:22px; line-height:1.5; max-width:320px; margin-left:auto; margin-right:auto;">{{ data.strings.govtLine }}</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ data.isStep1 }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:obFadeUp 400ms ease-out;">
+        <h2 style="font-family:'Instrument Sans',sans-serif; font-size:22px; font-weight:700; color:#1A1625; text-align:center; margin:0 0 6px;">{{ data.strings.selectLanguageTitle }}</h2>
+        <p style="text-align:center; color:#6B7280; font-size:13px; margin:0 0 20px;">{{ data.strings.selectLanguageSub }}</p>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:24px;">
+          <sc-for list="{{ data.languages }}" as="lang" hint-placeholder-count="12">
+            <button onClick="{{ lang.onSelect }}" style="display:flex; flex-direction:column; align-items:center; gap:2px; padding:12px 4px; border-radius:12px; border:1.5px solid {{ lang.borderColor }}; background:{{ lang.bgColor }}; cursor:pointer; font-family:'DM Sans',sans-serif;">
+              <span style="font-size:15px; font-weight:600; color:#1A1625;">{{ lang.native }}</span>
+              <span style="font-size:10px; color:#6B7280;">{{ lang.en }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button onClick="{{ actions.back }}" style="background:#fff; color:#374151; border:1.5px solid #E5E7EB; padding:14px 22px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer;">{{ data.strings.back }}</button>
+          <button onClick="{{ actions.next }}" style="flex:1; background:linear-gradient(90deg,#4F46E5,#7C3AED); color:#fff; border:none; padding:14px 22px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; box-shadow:0 8px 24px -8px rgba(124,58,237,0.4);">{{ data.strings.next }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ data.isStep2 }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:obFadeUp 400ms ease-out;">
+        <h2 style="font-family:'Instrument Sans',sans-serif; font-size:22px; font-weight:700; color:#1A1625; text-align:center; margin:0 0 6px;">{{ data.strings.selectStateTitle }}</h2>
+        <p style="text-align:center; color:#6B7280; font-size:13px; margin:0 0 20px;">{{ data.strings.selectStateSub }}</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+          <button onClick="{{ data.onSelectAP }}" style="display:flex; flex-direction:column; align-items:center; gap:6px; padding:20px 10px; border-radius:16px; border:1.5px solid {{ data.apBorder }}; background:{{ data.apBg }}; cursor:pointer; font-family:'DM Sans',sans-serif;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span style="font-size:14px; font-weight:600; color:#1A1625;">{{ data.strings.stateAP }}</span>
+          </button>
+          <button onClick="{{ data.onSelectTS }}" style="display:flex; flex-direction:column; align-items:center; gap:6px; padding:20px 10px; border-radius:16px; border:1.5px solid {{ data.tsBorder }}; background:{{ data.tsBg }}; cursor:pointer; font-family:'DM Sans',sans-serif;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span style="font-size:14px; font-weight:600; color:#1A1625;">{{ data.strings.stateTS }}</span>
+          </button>
+        </div>
+        <select onChange="{{ data.onOtherStateChange }}" style="width:100%; padding:13px 14px; border-radius:12px; border:1.5px solid #E5E7EB; font-family:'DM Sans',sans-serif; font-size:14px; color:#374151; margin-bottom:12px; background:#fff;">
+          <option value="">{{ data.strings.otherStateLabel }}</option>
+          <sc-for list="{{ data.otherStates }}" as="os" hint-placeholder-count="10">
+            <option value="{{ os.name }}">{{ os.name }}</option>
+          </sc-for>
+        </select>
+        <input value="{{ data.district }}" onChange="{{ actions.setDistrict }}" placeholder="{{ data.strings.districtPlaceholder }}" style="width:100%; padding:13px 14px; border-radius:12px; border:1.5px solid #E5E7EB; font-family:'DM Sans',sans-serif; font-size:14px; color:#1A1625; margin-bottom:22px; box-sizing:border-box;"/>
+        <div style="display:flex; gap:10px;">
+          <button onClick="{{ actions.back }}" style="background:#fff; color:#374151; border:1.5px solid #E5E7EB; padding:14px 22px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer;">{{ data.strings.back }}</button>
+          <button onClick="{{ actions.next }}" style="flex:1; background:linear-gradient(90deg,#4F46E5,#7C3AED); color:#fff; border:none; padding:14px 22px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; box-shadow:0 8px 24px -8px rgba(124,58,237,0.4);">{{ data.strings.next }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ data.isStep3 }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:obFadeUp 400ms ease-out;">
+        <h2 style="font-family:'Instrument Sans',sans-serif; font-size:22px; font-weight:700; color:#1A1625; text-align:center; margin:0 0 6px;">{{ data.strings.profileTitle }}</h2>
+        <p style="text-align:center; color:#6B7280; font-size:13px; margin:0 0 20px;">{{ data.strings.profileSub }}</p>
+        <label style="display:block; font-size:13px; font-weight:600; color:#374151; margin-bottom:6px;">{{ data.strings.nameLabel }}</label>
+        <input value="{{ data.name }}" onChange="{{ actions.setName }}" placeholder="{{ data.strings.namePlaceholder }}" style="width:100%; padding:13px 14px; border-radius:12px; border:1.5px solid #E5E7EB; font-family:'DM Sans',sans-serif; font-size:14px; color:#1A1625; margin-bottom:18px; box-sizing:border-box;"/>
+        <label style="display:block; font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">{{ data.strings.cropsLabel }}</label>
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:18px;">
+          <sc-for list="{{ data.crops }}" as="crop" hint-placeholder-count="7">
+            <button onClick="{{ crop.onToggle }}" style="padding:12px 10px; border-radius:12px; border:1.5px solid {{ crop.borderColor }}; background:{{ crop.bgColor }}; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:#1A1625; text-align:left;">{{ crop.label }}</button>
+          </sc-for>
+        </div>
+        <label style="display:block; font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">{{ data.strings.landSizeLabel }}</label>
+        <div style="display:flex; gap:8px; margin-bottom:24px;">
+          <sc-for list="{{ data.landOptions }}" as="opt" hint-placeholder-count="3">
+            <button onClick="{{ opt.onSelect }}" style="flex:1; padding:11px 6px; border-radius:10px; border:1.5px solid {{ opt.borderColor }}; background:{{ opt.bgColor }}; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12.5px; font-weight:600; color:#374151;">{{ opt.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button onClick="{{ actions.back }}" style="background:#fff; color:#374151; border:1.5px solid #E5E7EB; padding:14px 22px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer;">{{ data.strings.back }}</button>
+          <button onClick="{{ actions.next }}" style="flex:1; background:linear-gradient(90deg,#4F46E5,#7C3AED); color:#fff; border:none; padding:14px 22px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; box-shadow:0 8px 24px -8px rgba(124,58,237,0.4);">{{ data.strings.next }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ data.isStep4 }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:obFadeUp 400ms ease-out;">
+        <h2 style="font-family:'Instrument Sans',sans-serif; font-size:22px; font-weight:700; color:#1A1625; text-align:center; margin:0 0 6px;">{{ data.strings.accessTitle }}</h2>
+        <p style="text-align:center; color:#6B7280; font-size:13px; margin:0 0 22px;">{{ data.strings.accessSub }}</p>
+
+        <label style="display:block; font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">{{ data.strings.textSizeLabel }}</label>
+        <div style="display:flex; gap:8px; margin-bottom:14px;">
+          <sc-for list="{{ data.textSizeOptions }}" as="opt" hint-placeholder-count="3">
+            <button onClick="{{ opt.onSelect }}" style="flex:1; padding:11px 6px; border-radius:10px; border:1.5px solid {{ opt.borderColor }}; background:{{ opt.bgColor }}; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12.5px; font-weight:600; color:#374151;">{{ opt.label }}</button>
+          </sc-for>
+        </div>
+        <div style="background:#fff; border:1px solid #E5E7EB; border-radius:12px; padding:16px; margin-bottom:20px;">
+          <p style="font-size:calc(15px * var(--fs-mult,1)); color:#1A1625; margin:0; line-height:1.5;">{{ data.strings.sampleText }}</p>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E5E7EB; border-radius:12px; padding:14px 16px; margin-bottom:10px;">
+          <div>
+            <div style="font-size:14px; font-weight:600; color:#1A1625;">{{ data.strings.highContrastLabel }}</div>
+            <div style="font-size:12px; color:#9CA3AF;">{{ data.strings.highContrastSub }}</div>
+          </div>
+          <div onClick="{{ actions.toggleHighContrast }}" style="width:44px; height:24px; border-radius:999px; background:{{ data.highContrastTrackBg }}; position:relative; cursor:pointer; flex-shrink:0;">
+            <div style="position:absolute; top:2px; left:{{ data.highContrastKnobLeft }}; width:20px; height:20px; border-radius:999px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.25); transition:left 180ms;"></div>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E5E7EB; border-radius:12px; padding:14px 16px; margin-bottom:24px;">
+          <div>
+            <div style="font-size:14px; font-weight:600; color:#1A1625;">{{ data.strings.voiceAssistLabel }}</div>
+            <div style="font-size:12px; color:#9CA3AF;">{{ data.strings.voiceAssistSub }}</div>
+          </div>
+          <div onClick="{{ actions.toggleVoiceAssist }}" style="width:44px; height:24px; border-radius:999px; background:{{ data.voiceAssistTrackBg }}; position:relative; cursor:pointer; flex-shrink:0;">
+            <div style="position:absolute; top:2px; left:{{ data.voiceAssistKnobLeft }}; width:20px; height:20px; border-radius:999px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.25); transition:left 180ms;"></div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button onClick="{{ actions.back }}" style="background:#fff; color:#374151; border:1.5px solid #E5E7EB; padding:14px 22px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer;">{{ data.strings.back }}</button>
+          <button onClick="{{ actions.finish }}" style="flex:1; background:linear-gradient(90deg,#4F46E5,#7C3AED); color:#fff; border:none; padding:14px 22px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; box-shadow:0 8px 24px -8px rgba(124,58,237,0.4);">{{ data.strings.finishSetup }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

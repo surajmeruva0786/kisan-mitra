@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap");
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    @keyframes kmBlobA { 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(30px,-40px) scale(1.08);} }
+    @keyframes kmBlobB { 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(-24px,30px) scale(1.05);} }
+  </style>
+</helmet>
+<div style="--fs-mult:{{ fontScaleMultiplier }}; font-family:'DM Sans','Noto Sans Telugu','Noto Sans Devanagari','Noto Sans Tamil','Noto Sans Kannada','Noto Sans Bengali','Noto Sans Gujarati','Noto Sans Gurmukhi','Noto Sans Oriya','Noto Sans Malayalam','Noto Sans Arabic',sans-serif; min-height:100vh; background:#FAFAFB; position:relative; color:#1A1625;">
+
+  <div style="position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0;">
+    <div style="position:absolute; width:520px; height:520px; border-radius:999px; background:#7C3AED; opacity:0.10; filter:blur(90px); top:-140px; left:-120px; animation:kmBlobA 16s ease-in-out infinite;"></div>
+    <div style="position:absolute; width:460px; height:460px; border-radius:999px; background:#4F46E5; opacity:0.09; filter:blur(90px); bottom:-120px; right:-100px; animation:kmBlobB 18s ease-in-out infinite;"></div>
+  </div>
+
+  <div style="position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; padding:14px 28px; border-bottom:1px solid rgba(0,0,0,0.06); background:rgba(255,255,255,0.7); backdrop-filter:blur(12px);">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <svg width="26" height="26" viewBox="0 0 64 64" fill="none">
+        <g transform="translate(32, 32)">
+          <circle cx="0" cy="0" r="26" stroke="#7C3AED" stroke-width="4.5" fill="none"></circle>
+          <path d="M-22,-18 A34,34 0 0,1 22,-18" stroke="url(#topM)" stroke-width="4" stroke-linecap="round" fill="none"></path>
+          <circle cx="0" cy="0" r="4.5" fill="#7C3AED"></circle>
+        </g>
+        <defs><linearGradient id="topM" x1="10" y1="14" x2="54" y2="14"><stop offset="0%" stop-color="#A78BFA"></stop><stop offset="100%" stop-color="#6D28D9"></stop></linearGradient></defs>
+      </svg>
+      <span style="font-family:'Instrument Sans',sans-serif; font-weight:700; font-size:15px; color:#1A1625;">Kisan-Mitra</span>
+      <span style="font-size:12px; color:#9CA3AF; font-weight:500;">Prototype Preview</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:2px; background:#F3F4F6; padding:3px; border-radius:999px;">
+      <button onClick="{{ setDesktopMode }}" style="{{ desktopToggleStyle }}">Desktop</button>
+      <button onClick="{{ setMobileMode }}" style="{{ mobileToggleStyle }}">Mobile</button>
+    </div>
+  </div>
+
+  <div style="position:relative; z-index:1;">
+    <sc-if value="{{ isDesktopMode }}" hint-placeholder-val="{{ true }}">
+      <sc-if value="{{ isOnboarding }}" hint-placeholder-val="{{ true }}">
+        <dc-import name="Onboarding" data="{{ obData }}" actions="{{ obActions }}" is-desktop="{{ true }}" hint-size="100%,760"></dc-import>
+      </sc-if>
+      <sc-if value="{{ isNotOnboarding }}" hint-placeholder-val="{{ false }}">
+        <dc-import name="AppShell" data="{{ shellData }}" actions="{{ shellActions }}" is-desktop="{{ true }}" is-mobile="{{ false }}" hint-size="100%,860"></dc-import>
+      </sc-if>
+    </sc-if>
+    <sc-if value="{{ isMobileMode }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; justify-content:center; padding:36px 16px 60px;">
+        <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 412 }}" height="{{ 892 }}" hint-size="412,892">
+          <sc-if value="{{ isOnboarding }}" hint-placeholder-val="{{ true }}">
+            <dc-import name="Onboarding" data="{{ obData }}" actions="{{ obActions }}" is-desktop="{{ false }}" hint-size="380,780"></dc-import>
+          </sc-if>
+          <sc-if value="{{ isNotOnboarding }}" hint-placeholder-val="{{ false }}">
+            <dc-import name="AppShell" data="{{ shellData }}" actions="{{ shellActions }}" is-desktop="{{ false }}" is-mobile="{{ true }}" hint-size="380,780"></dc-import>
+          </sc-if>
+        </x-import>
+      </div>
+    </sc-if>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+const LANGUAGES = [
+  {code:'te', native:'తెలుగు', en:'Telugu'},
+  {code:'hi', native:'हिन्दी', en:'Hindi'},
+  {code:'en', native:'English', en:'English'},
+  {code:'ta', native:'தமிழ்', en:'Tamil'},
+  {code:'kn', native:'ಕನ್ನಡ', en:'Kannada'},
+  {code:'mr', native:'मराठी', en:'Marathi'},
+  {code:'bn', native:'বাংলা', en:'Bengali'},
+  {code:'gu', native:'ગુજરાતી', en:'Gujarati'},
+  {code:'pa', native:'ਪੰਜਾਬੀ', en:'Punjabi'},
+  {code:'or', native:'ଓଡ଼ିଆ', en:'Odia'},
+  {code:'ml', native:'മലയാളം', en:'Malayalam'},
+  {code:'ur', native:'اردو', en:'Urdu'},
+];
+const SPEECH_LANG = {te:'te-IN',hi:'hi-IN',en:'en-IN',ta:'ta-IN',kn:'kn-IN',mr:'mr-IN',bn:'bn-IN',gu:'gu-IN',pa:'pa-IN',or:'or-IN',ml:'ml-IN',ur:'ur-IN'};
+
+const CROPS = [
+  {id:'paddy', en:'Paddy (Rice)', te:'వరి', hi:'धान'},
+  {id:'cotton', en:'Cotton', te:'పత్తి', hi:'कपास'},
+  {id:'chilli', en:'Chilli', te:'మిర్చి', hi:'मिर्च'},
+  {id:'maize', en:'Maize', te:'మొక్కజొన్న', hi:'मक्का'},
+  {id:'groundnut', en:'Groundnut', te:'వేరుశనగ', hi:'मूंगफली'},
+  {id:'sugarcane', en:'Sugarcane', te:'చెరకు', hi:'गन्ना'},
+  {id:'turmeric', en:'Turmeric', te:'పసుపు', hi:'हल्दी'},
+];
+
+const OTHER_STATES = ['Maharashtra','Punjab','Uttar Pradesh','Karnataka','Tamil Nadu','Gujarat','Madhya Pradesh','Bihar','Rajasthan','West Bengal'];
+
+const STAGE_NAMES = {
+  en: ['Land Preparation','Sowing / Planting','Fertilizing','Pest & Disease Watch','Harvest'],
+  te: ['భూమి తయారీ','విత్తడం / నాటడం','ఎరువులు వేయడం','పురుగు నివారణ','కోత'],
+  hi: ['भूमि तैयारी','बुवाई / रोपाई','उर्वरक डालना','कीट निगरानी','कटाई'],
+};
+
+const CROP_CALENDARS = {
+  paddy: [
+    {months:'May', tip:'Plough the field 2\u20133 times and level it well for even water retention.'},
+    {months:'Jun', tip:'Sow pre-germinated seeds in a raised nursery bed.'},
+    {months:'Jul\u2013Aug', tip:'Transplant 25\u201330 day seedlings; apply urea and DAP as per your soil health card.'},
+    {months:'Aug\u2013Sep', tip:'Watch for stem borer and brown plant hopper; scout weekly.'},
+    {months:'Oct\u2013Nov', tip:'Harvest once 80% of grains turn golden-yellow.'},
+  ],
+  cotton: [
+    {months:'Apr\u2013May', tip:'Deep plough and add farmyard manure before the first rains.'},
+    {months:'May\u2013Jun', tip:'Sow Bt cotton seed at 90\u00d760cm spacing after the first good rain.'},
+    {months:'Jul\u2013Aug', tip:'Split-apply nitrogen in 3 doses through the vegetative stage.'},
+    {months:'Aug\u2013Oct', tip:'Monitor closely for pink bollworm; install pheromone traps.'},
+    {months:'Nov\u2013Jan', tip:'Pick in 3\u20134 rounds as bolls burst open; store in dry conditions.'},
+  ],
+  chilli: [
+    {months:'Jun\u2013Jul', tip:'Raise seedlings in a shaded nursery bed for 4\u20135 weeks.'},
+    {months:'Aug', tip:'Transplant healthy seedlings at 60\u00d745cm spacing.'},
+    {months:'Sep\u2013Oct', tip:'Apply potassium-rich fertilizer to support fruit development.'},
+    {months:'Oct\u2013Dec', tip:'Check leaf undersides weekly for thrips and mites.'},
+    {months:'Jan\u2013Mar', tip:'Pick pods in 5\u20136 rounds as they turn deep red.'},
+  ],
+  maize: [
+    {months:'May\u2013Jun', tip:'Plough and form ridges for good drainage.'},
+    {months:'Jun', tip:'Sow seed at 60\u00d720cm spacing after pre-monsoon showers.'},
+    {months:'Jul', tip:'Top-dress with urea at the knee-high growth stage.'},
+    {months:'Jul\u2013Aug', tip:'Scout for fall armyworm in the whorl of young plants.'},
+    {months:'Sep\u2013Oct', tip:'Harvest when husks turn pale brown and kernels harden.'},
+  ],
+  groundnut: [
+    {months:'May\u2013Jun', tip:'Plough deep and apply gypsum before sowing.'},
+    {months:'Jun', tip:'Sow treated seed at 30\u00d710cm spacing at the onset of monsoon.'},
+    {months:'Jul', tip:'Apply calcium at flowering for healthy pod formation.'},
+    {months:'Aug', tip:'Watch for leaf miner and early leaf spot disease.'},
+    {months:'Sep\u2013Oct', tip:'Harvest when leaves start yellowing and pods mature.'},
+  ],
+  sugarcane: [
+    {months:'Jan\u2013Feb', tip:'Deep plough and prepare ridges and furrows.'},
+    {months:'Feb\u2013Mar', tip:'Plant healthy 2\u20133 budded setts treated with fungicide.'},
+    {months:'May\u2013Jun', tip:'Earth up soil around roots to prevent lodging.'},
+    {months:'Jul\u2013Sep', tip:'Monitor for early shoot borer and red rot disease.'},
+    {months:'Dec\u2013Feb', tip:'Harvest at 11\u201312 months when internodes are fully mature.'},
+  ],
+  turmeric: [
+    {months:'Apr', tip:'Plough and form raised beds with organic manure.'},
+    {months:'May', tip:'Plant healthy rhizomes at 30\u00d725cm spacing.'},
+    {months:'Jul\u2013Aug', tip:'Apply potash and mulch to retain soil moisture.'},
+    {months:'Sep\u2013Oct', tip:'Watch for rhizome rot in waterlogged patches.'},
+    {months:'Jan\u2013Feb', tip:'Harvest 7\u20139 months after planting when leaves dry up.'},
+  ],
+};
+
+const SCHEMES = [
+  {id:'pmkisan', level:'central', levelLabel:'Central', name:{en:'PM-KISAN', te:'పీఎం-కిసాన్', hi:'पीएम-किसान'},
+    benefit:{en:'\u20b96,000/year direct income support, paid in 3 installments of \u20b92,000 each.', te:'ఏడాదికి \u20b96,000 ప్రత్యక్ష ఆదాయ సహాయం, 3 వాయిదాలలో \u20b92,000 చొప్పున.', hi:'\u20b96,000/वर्ष प्रत्यक्ष आय सहायता, \u20b92,000 की 3 किस्तों में।'},
+    eligibility:['All landholding farmer families','Valid Aadhaar-linked bank account','Land records in the farmer\u2019s name'],
+    steps:['Visit pmkisan.gov.in or your nearest Common Service Centre','Complete "New Farmer Registration" with Aadhaar','Submit land ownership documents for verification','Track status using your registration number'],
+    documents:['Aadhaar Card','Land Ownership Papers','Bank Passbook'], helpline:'155261'},
+  {id:'pmfby', level:'central', levelLabel:'Central', name:{en:'Pradhan Mantri Fasal Bima Yojana', te:'ప్రధాన మంత్రి ఫసల్ బీమా యోజన', hi:'प्रधानमंत्री फसल बीमा योजना'},
+    benefit:{en:'Crop insurance at just 2% premium for Kharif and 1.5% for Rabi crops \u2014 covers drought, flood and pest losses.', te:'ఖరీఫ్‌కు 2%, రబీకి 1.5% ప్రీమియంతో పంట బీమా \u2014 కరువు, వరద, పురుగుల నష్టాలకు కవరేజ్.', hi:'खरीफ के लिए मात्र 2% और रबी के लिए 1.5% प्रीमियम पर फसल बीमा \u2014 सूखा, बाढ़ और कीट क्षति को कवर करता है।'},
+    eligibility:['Farmers growing notified crops','Both loanee and non-loanee farmers','Sharecroppers and tenant farmers included'],
+    steps:['Apply through your bank or nearest CSC before the season cut-off date','Declare the crop and area sown','Pay your share of the premium','Report crop loss within 72 hours of the event'],
+    documents:['Aadhaar Card','Land Records or Tenancy Agreement','Bank Account Details'], helpline:'14447'},
+  {id:'kcc', level:'central', levelLabel:'Central', name:{en:'Kisan Credit Card (KCC)', te:'కిసాన్ క్రెడిట్ కార్డ్', hi:'किसान क्रेडिट कार्ड'},
+    benefit:{en:'Short-term credit up to \u20b93 lakh at 4% interest per year with timely repayment.', te:'సకాలంలో చెల్లిస్తే ఏటా 4% వడ్డీకి \u20b93 లక్షల వరకు స్వల్పకాలిక రుణం.', hi:'समय पर भुगतान करने पर \u20b93 लाख तक अल्पकालिक ऋण, 4% वार्षिक ब्याज पर।'},
+    eligibility:['All farmers, tenant farmers and sharecroppers','Self-help group members involved in farming'],
+    steps:['Apply at any nearby bank branch or the bank\u2019s online portal','Submit land and identity documents','Receive your card within 2 weeks of approval'],
+    documents:['Aadhaar Card','Land Documents','Passport-size Photo'], helpline:'1800-180-1551'},
+  {id:'soilhealth', level:'central', levelLabel:'Central', name:{en:'Soil Health Card Scheme', te:'నేల ఆరోగ్య కార్డు పథకం', hi:'मृदा स्वास्थ्य कार्ड योजना'},
+    benefit:{en:'Free soil testing every 2 years with crop-wise fertilizer and nutrient recommendations.', te:'ప్రతి 2 సంవత్సరాలకు ఉచిత నేల పరీక్ష, పంట వారీగా ఎరువుల సిఫార్సులతో.', hi:'हर 2 वर्ष में निःशुल्क मृदा परीक्षण, फसल-वार उर्वरक अनुशंसाओं के साथ।'},
+    eligibility:['Every farmer with cultivable land is eligible','No cost for sample collection or testing'],
+    steps:['Contact your local Agriculture Extension Officer','Provide a soil sample from your field','Receive your Soil Health Card within a few weeks'],
+    documents:['Land Details','Aadhaar Card'], helpline:'1800-180-1551'},
+  {id:'annadata', level:'ap', levelLabel:'Andhra Pradesh', name:{en:'Annadata Sukhibhava', te:'అన్నదాత సుఖీభవ', hi:'अन्नदाता सुखीभव'},
+    benefit:{en:'\u20b920,000 per farmer family every year (includes \u20b96,000 from PM-KISAN), in 3 installments.', te:'ఏటా ప్రతి రైతు కుటుంబానికి \u20b920,000 (పీఎం-కిసాన్ \u20b96,000తో సహా), 3 వాయిదాలలో.', hi:'हर वर्ष प्रति किसान परिवार \u20b920,000 (पीएम-किसान के \u20b96,000 सहित), 3 किस्तों में।'},
+    eligibility:['Permanent resident of Andhra Pradesh','Small and marginal farmer families','Tenant and ROFR cultivators included'],
+    steps:['Visit your nearest Rythu Bharosa Kendra (RBK)','Complete e-KYC and land verification','Link Aadhaar to your bank account'],
+    documents:['Aadhaar Card','Land Records','Bank Passbook'], helpline:'1902'},
+  {id:'rythubharosats', level:'ts', levelLabel:'Telangana', name:{en:'Rythu Bharosa', te:'రైతు భరోసా', hi:'रైతు भरोसा'},
+    benefit:{en:'\u20b912,000 per acre every year, credited in two instalments before Kharif and Rabi.', te:'ఏటా ఎకరాకు \u20b912,000, ఖరీఫ్ మరియు రబీకి ముందు రెండు వాయిదాలలో జమ.', hi:'हर वर्ष प्रति एकड़ \u20b912,000, खरीफ और रबी से पहले दो किस्तों में जमा।'},
+    eligibility:['Permanent resident of Telangana','Owner of actively cultivated agricultural land','Registered tenant farmers with valid lease'],
+    steps:['Visit your nearest Praja Palana Centre or CSC','Verify land records on the Bhu Bharati portal','Link Aadhaar to your bank account for direct transfer'],
+    documents:['Aadhaar Card','Pattadar Passbook','Bank Passbook'], helpline:'040-2338-3520'},
+];
+
+const MARKET_ROWS = [
+  {id:'m1', cropId:'cotton', crop:'Cotton', market:'Guntur', price:7150, change:2.3, trend:'up'},
+  {id:'m2', cropId:'chilli', crop:'Chilli', market:'Guntur', price:18400, change:-1.1, trend:'down'},
+  {id:'m3', cropId:'paddy', crop:'Paddy (Common)', market:'Vijayawada', price:2183, change:0.5, trend:'up'},
+  {id:'m4', cropId:'maize', crop:'Maize', market:'Warangal', price:2020, change:1.8, trend:'up'},
+  {id:'m5', cropId:'groundnut', crop:'Groundnut', market:'Kurnool', price:6850, change:-0.8, trend:'down'},
+  {id:'m6', cropId:'turmeric', crop:'Turmeric', market:'Nizamabad', price:15200, change:3.2, trend:'up'},
+  {id:'m7', cropId:'sugarcane', crop:'Sugarcane', market:'Karimnagar', price:3400, change:0, trend:'flat'},
+];
+
+const FORECAST = [
+  {day:'Thu', high:29, low:23, cond:'rainy'},
+  {day:'Fri', high:28, low:22, cond:'rainy'},
+  {day:'Sat', high:31, low:24, cond:'cloudy'},
+  {day:'Sun', high:33, low:25, cond:'sunny'},
+  {day:'Mon', high:33, low:25, cond:'sunny'},
+  {day:'Tue', high:32, low:24, cond:'partly'},
+  {day:'Wed', high:30, low:23, cond:'cloudy'},
+];
+
+const WEATHER_ADVISORY = [
+  {en:'Rain expected Thu\u2013Fri. Delay any pesticide or fertilizer spraying until it clears.', te:'గురు-శుక్రవారాల్లో వర్షం. తుఫాను తగ్గే వరకు పురుగుమందులు, ఎరువుల పిచికారీ వాయిదా వేయండి.', hi:'गुरु\u2013शुक्रवार बारिश की संभावना। कीटनाशक या उर्वरक छिड़काव मौसम साफ़ होने तक टालें।'},
+  {en:'Humidity staying above 65% this week \u2014 watch chilli and cotton for early fungal disease.', te:'ఈ వారం తేమ 65% పైనే ఉంటుంది \u2014 మిర్చి, పత్తిలో శిలీంధ్ర వ్యాధుల కోసం గమనించండి.', hi:'इस सप्ताह नमी 65% से ऊपर रहेगी \u2014 मिर्च और कपास में फफूंद रोग के लिए नज़र रखें।'},
+  {en:'Clear skies from Sunday \u2014 a good window to plan harvest or land preparation work.', te:'ఆదివారం నుండి ఆకాశం నిర్మలంగా ఉంటుంది \u2014 కోత లేదా భూమి తయారీకి మంచి సమయం.', hi:'रविवार से आसमान साफ़ \u2014 कटाई या भूमि तैयारी की योजना बनाने का अच्छा समय।'},
+];
+const WEATHER_ALERT = {en:'Heavy rain expected Thursday and Friday \u2014 secure harvested stock and delay spraying.', te:'గురు, శుక్రవారాల్లో భారీ వర్షం అవకాశం \u2014 నిల్వ ఉంచిన పంటను భద్రపరచండి, పిచికారీ వాయిదా వేయండి.', hi:'गुरुवार-शुक्रवार भारी बारिश की संभावना \u2014 कटी फसल सुरक्षित रखें और छिड़काव टालें।'};
+
+const CHAT_SCRIPT = {
+  en: {
+    weather: {q:'What\u2019s the weather like today?', a:{type:'text', text:'Guntur district: 31\u00b0C, partly cloudy. Humidity 68%, light wind. Rain is expected Thursday\u2013Friday \u2014 a good window to finish spraying before then.'}},
+    prices: {q:'What is today\u2019s cotton price?', a:{type:'list', text:'Today\u2019s prices in Guntur market:', items:['Cotton: \u20b97,150/quintal (up 2.3%)','Chilli: \u20b918,400/quintal (down 1.1%)']}},
+    schemes: {q:'Am I eligible for PM-KISAN?', a:{type:'text', text:'If you\u2019re a farmer family with cultivable land, you likely qualify for PM-KISAN \u2014 \u20b96,000/year in 3 installments. Open Schemes \u2192 PM-KISAN to check full eligibility and apply.'}},
+    calendar: {q:'When should I sow paddy?', a:{type:'text', text:'For Kharif paddy: prepare the nursery in early June, transplant seedlings in July, and expect harvest around late October to November.'}},
+    pest: {q:'My chilli leaves are turning yellow, what should I do?', a:{type:'text', text:'Yellowing chilli leaves often signal a nutrient deficiency or thrips damage. Check the undersides of leaves for tiny insects and consider a neem-oil spray. If it spreads fast, visit your nearest Rythu Bharosa Kendra for a proper diagnosis.'}},
+    fallback: 'I can help with weather, market prices, government schemes, crop calendar, and pest problems. Try one of the buttons above, or ask me directly.',
+  },
+  te: {
+    weather: {q:'ఈరోజు వాతావరణం ఎలా ఉంది?', a:{type:'text', text:'గుంటూరు జిల్లా: 31\u00b0C, పాక్షిక మేఘావృతం. తేమ 68%, తేలికపాటి గాలి. గురు-శుక్రవారాల్లో వర్షం అవకాశం \u2014 అంతకు ముందే పిచికారీ పూర్తి చేసుకోండి.'}},
+    prices: {q:'ఈరోజు పత్తి ధర ఎంత?', a:{type:'list', text:'గుంటూరు మార్కెట్‌లో ఈరోజు ధరలు:', items:['పత్తి: \u20b97,150/క్వింటాల్ (2.3% పైకి)','మిర్చి: \u20b918,400/క్వింటాల్ (1.1% కిందికి)']}},
+    schemes: {q:'నేను పీఎం-కిసాన్‌కు అర్హుడినా?', a:{type:'text', text:'సాగుభూమి ఉన్న రైతు కుటుంబమైతే మీరు పీఎం-కిసాన్‌కు అర్హులు \u2014 ఏటా \u20b96,000, 3 వాయిదాలలో. పూర్తి వివరాలకు పథకాలు \u2192 పీఎం-కిసాన్ చూడండి.'}},
+    calendar: {q:'వరి ఎప్పుడు విత్తాలి?', a:{type:'text', text:'ఖరీఫ్ వరికి: జూన్ మొదట్లో నారుమడి తయారు చేసి, జూలైలో నాటండి. అక్టోబర్ చివర నుండి నవంబర్‌లో కోతకు వస్తుంది.'}},
+    pest: {q:'మిర్చి ఆకులు పసుపు రంగులోకి మారుతున్నాయి, ఏం చేయాలి?', a:{type:'text', text:'మిర్చి ఆకులు పసుపు రంగులోకి మారడం పోషకాల లోపం లేదా తామర పురుగుల వల్ల కావచ్చు. ఆకుల అడుగు భాగం పరిశీలించి, వేప నూనె పిచికారీ చేయండి. ఎక్కువైతే సమీప రైతు భరోసా కేంద్రాన్ని సంప్రదించండి.'}},
+    fallback: 'వాతావరణం, మార్కెట్ ధరలు, ప్రభుత్వ పథకాలు, పంట క్యాలెండర్, పురుగుల సమస్యలపై నేను సహాయం చేయగలను. పైన ఉన్న బటన్లలో ఒకటి నొక్కండి లేదా నేరుగా అడగండి.',
+  },
+  hi: {
+    weather: {q:'आज मौसम कैसा है?', a:{type:'text', text:'गुंटूर जिला: 31\u00b0C, आंशिक बादल। नमी 68%, हल्की हवा। गुरुवार-शुक्रवार बारिश की संभावना \u2014 उससे पहले छिड़काव पूरा कर लें।'}},
+    prices: {q:'आज कपास का भाव क्या है?', a:{type:'list', text:'गुंटूर मंडी में आज के भाव:', items:['कपास: \u20b97,150/क्विंटल (2.3% ऊपर)','मिर्च: \u20b918,400/क्विंटल (1.1% नीचे)']}},
+    schemes: {q:'क्या मैं पीएम-किसान के लिए पात्र हूँ?', a:{type:'text', text:'अगर आपके पास खेती योग्य भूमि है तो आप पीएम-किसान के लिए पात्र हैं \u2014 \u20b96,000/वर्ष, 3 किस्तों में। पूरी जानकारी के लिए योजनाएँ \u2192 पीएम-किसान खोलें।'}},
+    calendar: {q:'धान कब बोना चाहिए?', a:{type:'text', text:'खरीफ धान के लिए: जून की शुरुआत में नर्सरी तैयार करें, जुलाई में रोपाई करें। कटाई अक्टूबर अंत से नवंबर तक होती है।'}},
+    pest: {q:'मेरी मिर्च की पत्तियाँ पीली पड़ रही हैं, क्या करूँ?', a:{type:'text', text:'मिर्च की पत्तियों का पीला पड़ना अक्सर पोषक तत्वों की कमी या थ्रिप्स कीट के कारण होता है। पत्तियों के नीचे का हिस्सा जाँचें और नीम तेल का छिड़काव करें। ज़्यादा फैले तो नज़दीकी रैतु भरोसा केंद्र से संपर्क करें।'}},
+    fallback: 'मैं मौसम, बाज़ार भाव, सरकारी योजनाओं, फसल कैलेंडर और कीट समस्याओं में मदद कर सकता हूँ। ऊपर दिए बटन आज़माएँ या सीधे पूछें।',
+  },
+};
+
+const UI = {
+  en: {appName:'Kisan-Mitra', tagline:'Your Farming Companion', govtLine:'A joint initiative with the AP & Telangana Departments of Agriculture',
+    navChat:'Chat', navSchemes:'Schemes', navCalendar:'Calendar', navPrices:'Prices', navWeather:'Weather', navSettings:'Settings',
+    getStarted:'Get Started', next:'Next', back:'Back', skip:'Skip', finishSetup:'Finish Setup',
+    selectLanguageTitle:'Select Your Language', selectLanguageSub:'Choose the language you\u2019re most comfortable with',
+    selectStateTitle:'Select Your State', selectStateSub:'This helps us show the right schemes and mandi prices', stateAP:'Andhra Pradesh', stateTS:'Telangana', otherStateLabel:'Other State', districtLabel:'District', districtPlaceholder:'e.g., Guntur',
+    profileTitle:'Tell Us About Your Farm', profileSub:'This helps us personalize your advice', nameLabel:'Your Name', namePlaceholder:'e.g., Ramesh Kumar', cropsLabel:'Your Main Crops', landSizeLabel:'Land Size', land1:'Under 1 acre', land2:'1\u20135 acres', land3:'5+ acres',
+    accessTitle:'Make It Comfortable to Read', accessSub:'You can always change these later in Settings', textSizeLabel:'Text Size', textNormal:'Normal', textLarge:'Large', textXLarge:'Extra Large', sampleText:'Today\u2019s cotton price is \u20b97,150 per quintal.', highContrastLabel:'High Contrast', highContrastSub:'Bolder text and stronger borders', voiceAssistLabel:'Voice Assistance', voiceAssistSub:'Ask questions using your voice',
+    chatSubGreeting:'Ask me anything about farming', typeMessage:'Type your message...', listening:'Listening...', quickWeather:'Weather Today', quickPrices:'Market Prices', quickSchemes:'Govt Schemes', quickCalendar:'Crop Calendar', quickPest:'Pest Help',
+    schemesTitle:'Scheme Explorer', filterAll:'All', filterCentral:'Central', filterAP:'Andhra Pradesh', filterTS:'Telangana', viewDetails:'View Details', benefitLabel:'Benefit', eligibilityLabel:'Eligibility', howToApplyLabel:'How to Apply', documentsLabel:'Documents Needed', helplineLabel:'Helpline', call:'Call', backLabel:'Back',
+    calendarTitle:'Crop Calendar', calendarSub:'Season-wise stages for your crop',
+    pricesTitle:'Market Prices', searchPlaceholder:'Search crop or market...', perQuintal:'/quintal', lastUpdated:'Last updated: Today, 7:00 AM', nearbyMarkets:'Nearby Markets',
+    weatherTitle:'Weather', humidityLabel:'Humidity', windLabel:'Wind', forecastTitle:'7-Day Forecast', advisoryTitle:'Farming Advisory',
+    settingsTitle:'Settings', profileSection:'Profile', languageSection:'Language', accessibilitySection:'Accessibility', notificationsSection:'Notifications', helpSection:'Help & Support', aboutSection:'About', editProfile:'Edit Profile', weatherAlerts:'Weather Alerts', priceAlerts:'Price Alerts', schemeUpdates:'Scheme Updates', callHelpline:'Call Helpline', replayOnboarding:'Replay Onboarding Tour', poweredBy:'Powered by Orbis Systems', version:'Kisan-Mitra v1.0.0'},
+  te: {appName:'కిసాన్-మిత్ర', tagline:'మీ వ్యవసాయ సహాయకుడు', govtLine:'ఆంధ్రప్రదేశ్ & తెలంగాణ వ్యవసాయ శాఖల సంయుక్త కార్యక్రమం',
+    navChat:'చాట్', navSchemes:'పథకాలు', navCalendar:'క్యాలెండర్', navPrices:'ధరలు', navWeather:'వాతావరణం', navSettings:'సెట్టింగ్‌లు',
+    getStarted:'ప్రారంభించండి', next:'తదుపరి', back:'వెనుకకు', skip:'దాటవేయి', finishSetup:'పూర్తి చేయండి',
+    selectLanguageTitle:'మీ భాష ఎంచుకోండి', selectLanguageSub:'మీకు నచ్చిన భాషను ఎంచుకోండి',
+    selectStateTitle:'మీ రాష్ట్రం ఎంచుకోండి', selectStateSub:'సరైన పథకాలు, మార్కెట్ ధరలు చూపడానికి ఇది సహాయపడుతుంది', stateAP:'ఆంధ్రప్రదేశ్', stateTS:'తెలంగాణ', otherStateLabel:'ఇతర రాష్ట్రం', districtLabel:'జిల్లా', districtPlaceholder:'ఉదా., గుంటూరు',
+    profileTitle:'మీ వ్యవసాయం గురించి చెప్పండి', profileSub:'ఇది మీకు తగిన సలహా ఇవ్వడానికి సహాయపడుతుంది', nameLabel:'మీ పేరు', namePlaceholder:'ఉదా., రమేష్ కుమార్', cropsLabel:'మీ ప్రధాన పంటలు', landSizeLabel:'భూమి విస్తీర్ణం', land1:'1 ఎకరం లోపు', land2:'1\u20135 ఎకరాలు', land3:'5+ ఎకరాలు',
+    accessTitle:'చదవడానికి సౌకర్యంగా చేసుకోండి', accessSub:'వీటిని తర్వాత సెట్టింగ్‌లలో మార్చుకోవచ్చు', textSizeLabel:'అక్షర పరిమాణం', textNormal:'సాధారణ', textLarge:'పెద్దది', textXLarge:'మరింత పెద్దది', sampleText:'ఈరోజు పత్తి ధర క్వింటాల్‌కు \u20b97,150.', highContrastLabel:'అధిక కాంట్రాస్ట్', highContrastSub:'మందమైన అక్షరాలు, బలమైన అంచులు', voiceAssistLabel:'వాయిస్ సహాయం', voiceAssistSub:'మీ స్వరంతో ప్రశ్నలు అడగండి',
+    chatSubGreeting:'వ్యవసాయం గురించి ఏదైనా అడగండి', typeMessage:'మీ సందేశం టైప్ చేయండి...', listening:'వింటున్నాను...', quickWeather:'ఈరోజు వాతావరణం', quickPrices:'మార్కెట్ ధరలు', quickSchemes:'ప్రభుత్వ పథకాలు', quickCalendar:'పంట క్యాలెండర్', quickPest:'పురుగుల సహాయం',
+    schemesTitle:'పథకాల అన్వేషణ', filterAll:'అన్నీ', filterCentral:'కేంద్రం', filterAP:'ఆంధ్రప్రదేశ్', filterTS:'తెలంగాణ', viewDetails:'వివరాలు చూడండి', benefitLabel:'ప్రయోజనం', eligibilityLabel:'అర్హత', howToApplyLabel:'ఎలా దరఖాస్తు చేయాలి', documentsLabel:'అవసరమైన పత్రాలు', helplineLabel:'హెల్ప్‌లైన్', call:'కాల్ చేయండి', backLabel:'వెనుకకు',
+    calendarTitle:'పంట క్యాలెండర్', calendarSub:'మీ పంట కోసం సీజన్ వారీగా దశలు',
+    pricesTitle:'మార్కెట్ ధరలు', searchPlaceholder:'పంట లేదా మార్కెట్ వెతకండి...', perQuintal:'/క్వింటాల్', lastUpdated:'చివరిసారి నవీకరణ: ఈరోజు, 7:00 AM', nearbyMarkets:'సమీప మార్కెట్లు',
+    weatherTitle:'వాతావరణం', humidityLabel:'తేమ', windLabel:'గాలి', forecastTitle:'7-రోజుల సూచన', advisoryTitle:'వ్యవసాయ సలహా',
+    settingsTitle:'సెట్టింగ్‌లు', profileSection:'ప్రొఫైల్', languageSection:'భాష', accessibilitySection:'యాక్సెసిబిలిటీ', notificationsSection:'నోటిఫికేషన్‌లు', helpSection:'సహాయం', aboutSection:'గురించి', editProfile:'ప్రొఫైల్ సవరించండి', weatherAlerts:'వాతావరణ హెచ్చరికలు', priceAlerts:'ధర హెచ్చరికలు', schemeUpdates:'పథక నవీకరణలు', callHelpline:'హెల్ప్‌లైన్‌కు కాల్ చేయండి', replayOnboarding:'ఆన్‌బోర్డింగ్ మళ్లీ చూడండి', poweredBy:'Orbis Systems సహకారంతో', version:'కిసాన్-మిత్ర v1.0.0'},
+  hi: {appName:'किसान-मित्र', tagline:'आपका कृषि सहायक', govtLine:'आंध्र प्रदेश और तेलंगाना कृषि विभागों की संयुक्त पहल',
+    navChat:'चैट', navSchemes:'योजनाएँ', navCalendar:'कैलेंडर', navPrices:'भाव', navWeather:'मौसम', navSettings:'सेटिंग्स',
+    getStarted:'शुरू करें', next:'आगे', back:'पीछे', skip:'छोड़ें', finishSetup:'पूर्ण करें',
+    selectLanguageTitle:'अपनी भाषा चुनें', selectLanguageSub:'जिस भाषा में आप सहज हों उसे चुनें',
+    selectStateTitle:'अपना राज्य चुनें', selectStateSub:'इससे सही योजनाएँ और मंडी भाव दिखाने में मदद मिलती है', stateAP:'आंध्र प्रदेश', stateTS:'तेलंगाना', otherStateLabel:'अन्य राज्य', districtLabel:'ज़िला', districtPlaceholder:'जैसे, गुंटूर',
+    profileTitle:'अपने खेत के बारे में बताएँ', profileSub:'इससे आपको सही सलाह देने में मदद मिलेगी', nameLabel:'आपका नाम', namePlaceholder:'जैसे, रमेश कुमार', cropsLabel:'आपकी मुख्य फ़सलें', landSizeLabel:'भूमि का आकार', land1:'1 एकड़ से कम', land2:'1\u20135 एकड़', land3:'5+ एकड़',
+    accessTitle:'पढ़ने में आसान बनाएँ', accessSub:'इन्हें बाद में सेटिंग्स में बदला जा सकता है', textSizeLabel:'टेक्स्ट साइज़', textNormal:'सामान्य', textLarge:'बड़ा', textXLarge:'अतिरिक्त बड़ा', sampleText:'आज कपास का भाव \u20b97,150 प्रति क्विंटल है।', highContrastLabel:'हाई कॉन्ट्रास्ट', highContrastSub:'गहरे अक्षर, मज़बूत बॉर्डर', voiceAssistLabel:'वॉइस सहायता', voiceAssistSub:'अपनी आवाज़ से सवाल पूछें',
+    chatSubGreeting:'खेती के बारे में कुछ भी पूछें', typeMessage:'अपना संदेश लिखें...', listening:'सुन रहा है...', quickWeather:'आज का मौसम', quickPrices:'बाज़ार भाव', quickSchemes:'सरकारी योजनाएँ', quickCalendar:'फ़सल कैलेंडर', quickPest:'कीट सहायता',
+    schemesTitle:'योजना खोजक', filterAll:'सभी', filterCentral:'केंद्रीय', filterAP:'आंध्र प्रदेश', filterTS:'तेलंगाना', viewDetails:'विवरण देखें', benefitLabel:'लाभ', eligibilityLabel:'पात्रता', howToApplyLabel:'आवेदन कैसे करें', documentsLabel:'आवश्यक दस्तावेज़', helplineLabel:'हेल्पलाइन', call:'कॉल करें', backLabel:'पीछे',
+    calendarTitle:'फ़सल कैलेंडर', calendarSub:'आपकी फ़सल के लिए मौसम-वार चरण',
+    pricesTitle:'बाज़ार भाव', searchPlaceholder:'फ़सल या मंडी खोजें...', perQuintal:'/क्विंटल', lastUpdated:'अंतिम अपडेट: आज, 7:00 AM', nearbyMarkets:'नज़दीकी मंडियाँ',
+    weatherTitle:'मौसम', humidityLabel:'नमी', windLabel:'हवा', forecastTitle:'7-दिन का पूर्वानुमान', advisoryTitle:'कृषि सलाह',
+    settingsTitle:'सेटिंग्स', profileSection:'प्रोफ़ाइल', languageSection:'भाषा', accessibilitySection:'सुगम्यता', notificationsSection:'सूचनाएँ', helpSection:'सहायता', aboutSection:'ऐप के बारे में', editProfile:'प्रोफ़ाइल संपादित करें', weatherAlerts:'मौसम अलर्ट', priceAlerts:'भाव अलर्ट', schemeUpdates:'योजना अपडेट', callHelpline:'हेल्पलाइन कॉल करें', replayOnboarding:'ऑनबोर्डिंग फिर देखें', poweredBy:'Orbis Systems द्वारा संचालित', version:'किसान-मित्र v1.0.0'},
+};
+const NAV_FALLBACK = {
+  ta:{navChat:'அரட்டை',navSchemes:'திட்டங்கள்',navCalendar:'நாட்காட்டி',navPrices:'விலைகள்',navWeather:'வானிலை',navSettings:'அமைப்புகள்',getStarted:'தொடங்குங்கள்'},
+  kn:{navChat:'ಚಾಟ್',navSchemes:'ಯೋಜನೆಗಳು',navCalendar:'ಕ್ಯಾಲೆಂಡರ್',navPrices:'ಬೆಲೆಗಳು',navWeather:'ಹವಾಮಾನ',navSettings:'ಸೆಟ್ಟಿಂಗ್\u200cಗಳು',getStarted:'ಪ್ರಾರಂಭಿಸಿ'},
+  mr:{navChat:'चॅट',navSchemes:'योजना',navCalendar:'दिनदर्शिका',navPrices:'भाव',navWeather:'हवामान',navSettings:'सेटिंग्ज',getStarted:'सुरू करा'},
+  bn:{navChat:'চ্যাট',navSchemes:'প্রকল্প',navCalendar:'ক্যালেন্ডার',navPrices:'দাম',navWeather:'আবহাওয়া',navSettings:'সেটিংস',getStarted:'শুরু করুন'},
+  gu:{navChat:'ચેટ',navSchemes:'યોજનાઓ',navCalendar:'કેલેન્ડર',navPrices:'ભાવ',navWeather:'હવામાન',navSettings:'સેટિંગ્સ',getStarted:'શરૂ કરો'},
+  pa:{navChat:'ਗੱਲਬਾਤ',navSchemes:'ਯੋਜਨਾਵਾਂ',navCalendar:'ਕੈਲੰਡਰ',navPrices:'ਕੀਮਤਾਂ',navWeather:'ਮੌਸਮ',navSettings:'ਸੈਟਿੰਗਾਂ',getStarted:'ਸ਼ੁਰੂ ਕਰੋ'},
+  or:{navChat:'ଚାଟ୍',navSchemes:'ଯୋଜନା',navCalendar:'କ୍ୟାଲେଣ୍ଡର୍',navPrices:'ମୂଲ୍ୟ',navWeather:'ପାଣିପାଗ',navSettings:'ସେଟିଂସ୍',getStarted:'ଆରମ୍ଭ କରନ୍ତୁ'},
+  ml:{navChat:'ചാറ്റ്',navSchemes:'പദ്ധതികൾ',navCalendar:'കലണ്ടർ',navPrices:'വിലകൾ',navWeather:'കാലാവസ്ഥ',navSettings:'ക്രമീകരണങ്ങൾ',getStarted:'ആരംഭിക്കുക'},
+  ur:{navChat:'چیٹ',navSchemes:'اسکیمیں',navCalendar:'کیلنڈر',navPrices:'قیمتیں',navWeather:'موسم',navSettings:'ترتیبات',getStarted:'شروع کریں'},
+};
+
+let uidCounter = 1;
+function uid() { return 'id' + (uidCounter++); }
+
+class Component extends DCLogic {
+  state = {
+    screen: 'onboarding', viewMode: 'desktop', onboardingStep: 0, onboardingReturnTo: 'chat',
+    language: 'te',
+    profile: { name:'', state:'', district:'', crops:[], landSize:'', textSize:'normal', highContrast:false, voiceAssist:true },
+    notifications: { weather:true, prices:true, schemes:true },
+    chat: { messages:[{id:uid(), from:'bot', type:'text', text:null}], typing:false, draft:'', listening:false },
+    schemeFilter: 'all', selectedScheme: null,
+    selectedCrop: null, selectedMarketRow: null, priceSearch: '',
+  };
+
+  t(key) {
+    const lang = this.state.language;
+    return (UI[lang] && UI[lang][key]) || (NAV_FALLBACK[lang] && NAV_FALLBACK[lang][key]) || UI.en[key] || '';
+  }
+  localized(obj) {
+    if (!obj) return '';
+    const lang = this.state.language;
+    return obj[lang] || obj.en;
+  }
+
+  getBotReply(rawMsg) {
+    const msg = rawMsg.toLowerCase();
+    const script = CHAT_SCRIPT[this.state.language] || CHAT_SCRIPT.en;
+    const scriptEn = CHAT_SCRIPT.en;
+    const pick = (key) => script[key] || scriptEn[key];
+    if (/weather|rain|climate|వాతావర|मौसम/.test(msg)) return pick('weather').a;
+    if (/price|rate|cotton|mandi|ధర|भाव|कीमत/.test(msg)) return pick('prices').a;
+    if (/scheme|yojana|kisan|eligib|పథక|योजना/.test(msg)) return pick('schemes').a;
+    if (/sow|calendar|plant|crop|పంట|कैलेंडर|बुवाई/.test(msg)) return pick('calendar').a;
+    if (/pest|disease|yellow|bug|పురుగు|कीट|पीली/.test(msg)) return pick('pest').a;
+    return {type:'text', text: script.fallback || scriptEn.fallback};
+  }
+
+  sendMessage(rawText, presetReply) {
+    const text = (rawText !== undefined ? rawText : this.state.chat.draft).trim();
+    if (!text) return;
+    const userMsg = {id:uid(), from:'user', type:'text', text};
+    this.setState(s => ({chat:{...s.chat, messages:[...s.chat.messages, userMsg], draft:'', typing:true}}));
+    const reply = presetReply || this.getBotReply(text);
+    setTimeout(() => {
+      this.setState(s => ({chat:{...s.chat, typing:false, messages:[...s.chat.messages, {id:uid(), from:'bot', ...reply}]}}));
+    }, 650);
+  }
+
+  toggleMic() {
+    if (this.state.chat.listening) { if (this.recognition) this.recognition.stop(); this.setState(s=>({chat:{...s.chat, listening:false}})); return; }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { alert('Voice input is not supported in this browser.'); return; }
+    const rec = new SR();
+    rec.lang = SPEECH_LANG[this.state.language] || 'en-IN';
+    rec.interimResults = true;
+    rec.continuous = false;
+    rec.onresult = (e) => {
+      let transcript = '';
+      for (let i=0;i<e.results.length;i++) transcript += e.results[i][0].transcript;
+      const isFinal = e.results[e.results.length-1].isFinal;
+      this.setState(s => ({chat:{...s.chat, draft: transcript, listening: !isFinal}}));
+    };
+    rec.onend = () => this.setState(s => ({chat:{...s.chat, listening:false}}));
+    rec.onerror = () => this.setState(s => ({chat:{...s.chat, listening:false}}));
+    this.recognition = rec;
+    this.setState(s => ({chat:{...s.chat, listening:true}}));
+    try { rec.start(); } catch(e) {}
+  }
+
+  renderVals() {
+    const st = this.state;
+    const lang = st.language;
+    const t = (k) => this.t(k);
+    const isDesktopMode = st.viewMode === 'desktop';
+    const isOnboarding = st.screen === 'onboarding';
+    const highContrast = st.profile.highContrast;
+    const fontScaleMultiplier = st.profile.textSize === 'xlarge' ? 1.3 : st.profile.textSize === 'large' ? 1.15 : 1;
+    const fgColor = highContrast ? '#000000' : '#1A1625';
+    const fgMuted = highContrast ? '#1F2937' : '#4B5563';
+    const borderColor = highContrast ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.08)';
+
+    // ---------- Onboarding data ----------
+    const languagesList = LANGUAGES.map(l => ({
+      code: l.code, native: l.native, en: l.en,
+      isSelected: l.code === lang,
+      bgColor: l.code === lang ? '#F5F3FF' : '#FFFFFF',
+      borderColor: l.code === lang ? '#7C3AED' : '#E5E7EB',
+      onSelect: () => this.setState({language: l.code}),
+    }));
+    const cropsList = CROPS.map(c => {
+      const isSelected = st.profile.crops.includes(c.id);
+      return {
+        id: c.id, label: this.localized(c),
+        isSelected, bgColor: isSelected ? '#F5F3FF' : '#FFFFFF', borderColor: isSelected ? '#7C3AED' : '#E5E7EB',
+        onToggle: () => this.setState(s => ({profile:{...s.profile, crops: isSelected ? s.profile.crops.filter(x=>x!==c.id) : [...s.profile.crops, c.id]}})),
+      };
+    });
+    const landOptions = [
+      {key:'<1', label:t('land1')}, {key:'1-5', label:t('land2')}, {key:'5+', label:t('land3')},
+    ].map(o => { const sel = st.profile.landSize===o.key; return {...o, isSelected: sel, borderColor: sel?'#7C3AED':'#E5E7EB', bgColor: sel?'#F5F3FF':'#FFFFFF', onSelect: () => this.setState(s=>({profile:{...s.profile, landSize:o.key}}))}; });
+    const textSizeOptions = [
+      {key:'normal', label:t('textNormal')}, {key:'large', label:t('textLarge')}, {key:'xlarge', label:t('textXLarge')},
+    ].map(o => { const sel = st.profile.textSize===o.key; return {...o, isSelected: sel, borderColor: sel?'#7C3AED':'#E5E7EB', bgColor: sel?'#F5F3FF':'#FFFFFF', onSelect: () => this.setState(s=>({profile:{...s.profile, textSize:o.key}}))}; });
+    const dots = [0,1,2,3,4].map(i => ({bg: i === st.onboardingStep ? '#7C3AED' : i < st.onboardingStep ? '#C4B5FD' : '#E5E7EB'}));
+
+    const obData = {
+      isStep0: st.onboardingStep===0, isStep1: st.onboardingStep===1, isStep2: st.onboardingStep===2, isStep3: st.onboardingStep===3, isStep4: st.onboardingStep===4,
+      showSkip: st.onboardingStep > 0 && st.onboardingStep < 4,
+      dots, strings: { appName:t('appName'), tagline:t('tagline'), govtLine:t('govtLine'), getStarted:t('getStarted'), next:t('next'), back:t('back'), skip:t('skip'), finishSetup:t('finishSetup'),
+        selectLanguageTitle:t('selectLanguageTitle'), selectLanguageSub:t('selectLanguageSub'),
+        selectStateTitle:t('selectStateTitle'), selectStateSub:t('selectStateSub'), stateAP:t('stateAP'), stateTS:t('stateTS'), otherStateLabel:t('otherStateLabel'), districtLabel:t('districtLabel'), districtPlaceholder:t('districtPlaceholder'),
+        profileTitle:t('profileTitle'), profileSub:t('profileSub'), nameLabel:t('nameLabel'), namePlaceholder:t('namePlaceholder'), cropsLabel:t('cropsLabel'), landSizeLabel:t('landSizeLabel'),
+        accessTitle:t('accessTitle'), accessSub:t('accessSub'), textSizeLabel:t('textSizeLabel'), sampleText:t('sampleText'), highContrastLabel:t('highContrastLabel'), highContrastSub:t('highContrastSub'), voiceAssistLabel:t('voiceAssistLabel'), voiceAssistSub:t('voiceAssistSub') },
+      languages: languagesList,
+      isAP: st.profile.state==='AP', isTS: st.profile.state==='TS', isOther: st.profile.state && st.profile.state!=='AP' && st.profile.state!=='TS',
+      apBg: st.profile.state==='AP' ? '#F5F3FF':'#FFFFFF', apBorder: st.profile.state==='AP' ? '#7C3AED':'#E5E7EB',
+      tsBg: st.profile.state==='TS' ? '#F5F3FF':'#FFFFFF', tsBorder: st.profile.state==='TS' ? '#7C3AED':'#E5E7EB',
+      onSelectAP: () => this.setState(s=>({profile:{...s.profile, state:'AP'}})),
+      onSelectTS: () => this.setState(s=>({profile:{...s.profile, state:'TS'}})),
+      onOtherStateChange: (e) => this.setState(s=>({profile:{...s.profile, state:e.target.value}})),
+      otherStates: OTHER_STATES.map(name => ({name, isSelected: st.profile.state===name, onSelect: () => this.setState(s=>({profile:{...s.profile, state:name}}))})),
+      district: st.profile.district, name: st.profile.name,
+      crops: cropsList, landOptions, textSizeOptions,
+      highContrast: st.profile.highContrast, voiceAssist: st.profile.voiceAssist,
+      highContrastTrackBg: st.profile.highContrast ? '#7C3AED' : '#E5E7EB', highContrastKnobLeft: st.profile.highContrast ? '22px' : '2px',
+      voiceAssistTrackBg: st.profile.voiceAssist ? '#7C3AED' : '#E5E7EB', voiceAssistKnobLeft: st.profile.voiceAssist ? '22px' : '2px',
+      canFinishStep3: !!st.profile.name && st.profile.crops.length>0 && !!st.profile.landSize,
+    };
+    const obActions = {
+      next: () => this.setState(s => ({onboardingStep: Math.min(4, s.onboardingStep+1)})),
+      back: () => this.setState(s => ({onboardingStep: Math.max(0, s.onboardingStep-1)})),
+      skip: () => this.setState({screen: st.onboardingReturnTo || 'chat'}),
+      finish: () => this.setState({screen: st.onboardingReturnTo || 'chat'}),
+      setName: (e) => this.setState(s => ({profile:{...s.profile, name:e.target.value}})),
+      setDistrict: (e) => this.setState(s => ({profile:{...s.profile, district:e.target.value}})),
+      toggleHighContrast: () => this.setState(s => ({profile:{...s.profile, highContrast:!s.profile.highContrast}})),
+      toggleVoiceAssist: () => this.setState(s => ({profile:{...s.profile, voiceAssist:!s.profile.voiceAssist}})),
+    };
+
+    // ---------- Chat data ----------
+    const greetingText = {
+      en: st.profile.name ? `Hello, ${st.profile.name}` : 'Hello',
+      te: st.profile.name ? `నమస్కారం, ${st.profile.name}` : 'నమస్కారం',
+      hi: st.profile.name ? `नमस्ते, ${st.profile.name}` : 'नमस्ते',
+    };
+    const messages = st.chat.messages.map(m => ({
+      id: m.id, isBot: m.from==='bot', isUser: m.from==='user', isList: m.type==='list', isText: m.type!=='list',
+      text: m.text === null ? this.localized(greetingText) + '. ' + t('chatSubGreeting') + '.' : m.text,
+      items: (m.items||[]).map(txt => ({text: txt})),
+    }));
+    const quickActions = [
+      {key:'weather', label:t('quickWeather')}, {key:'prices', label:t('quickPrices')}, {key:'schemes', label:t('quickSchemes')}, {key:'calendar', label:t('quickCalendar')}, {key:'pest', label:t('quickPest')},
+    ].map(qa => ({...qa, onSend: () => {
+      const script = CHAT_SCRIPT[lang] || CHAT_SCRIPT.en;
+      const entry = script[qa.key] || CHAT_SCRIPT.en[qa.key];
+      this.sendMessage(entry.q, entry.a);
+    }}));
+
+    // ---------- Schemes data ----------
+    const schemeFilters = [
+      {key:'all', label:t('filterAll')}, {key:'central', label:t('filterCentral')}, {key:'ap', label:t('filterAP')}, {key:'ts', label:t('filterTS')},
+    ].map(f => { const active = st.schemeFilter===f.key; return {...f, isActive: active, bgColor: active?'#7C3AED':'#F3F4F6', textColor: active?'#FFFFFF':'#374151', onSelect: () => this.setState({schemeFilter:f.key})}; });
+    const filteredSchemes = SCHEMES.filter(s => st.schemeFilter==='all' || s.level===st.schemeFilter).map(s => ({
+      id:s.id, name:this.localized(s.name), benefit:this.localized(s.benefit), levelLabel:s.levelLabel, level:s.level,
+      onOpen: () => this.setState({selectedScheme:s.id}),
+    }));
+    const selectedSchemeObj = SCHEMES.find(s=>s.id===st.selectedScheme);
+    const selectedScheme = selectedSchemeObj ? {
+      name:this.localized(selectedSchemeObj.name), benefit:this.localized(selectedSchemeObj.benefit), levelLabel:selectedSchemeObj.levelLabel,
+      eligibility: selectedSchemeObj.eligibility.map(text=>({text})), steps: selectedSchemeObj.steps.map((text,i)=>({text, num:i+1})), documents: selectedSchemeObj.documents.map(text=>({text})),
+      helpline: selectedSchemeObj.helpline, onClose: () => this.setState({selectedScheme:null}),
+    } : null;
+
+    // ---------- Calendar data ----------
+    const calendarCrops = CROPS.map(c => { const sel = (st.selectedCrop || (st.profile.crops[0]||'paddy')) === c.id; return {id:c.id, label:this.localized(c), isSelected: sel, bgColor: sel?'#7C3AED':'#FFFFFF', textColor: sel?'#FFFFFF':'#374151', borderColor: sel?'#7C3AED':'#E5E7EB', onSelect: () => this.setState({selectedCrop:c.id})}; });
+    const activeCropId = st.selectedCrop || st.profile.crops[0] || 'paddy';
+    const stageNames = STAGE_NAMES[lang] || STAGE_NAMES.en;
+    const stages = (CROP_CALENDARS[activeCropId]||CROP_CALENDARS.paddy).map((stg,i) => ({name: stageNames[i], months: stg.months, tip: stg.tip}));
+
+    // ---------- Prices data ----------
+    const search = st.priceSearch.toLowerCase();
+    const priceRows = MARKET_ROWS.filter(r => !search || r.crop.toLowerCase().includes(search) || r.market.toLowerCase().includes(search)).map(r => {
+      const cropObj = CROPS.find(c=>c.id===r.cropId);
+      const cropLabel = cropObj ? this.localized(cropObj) + (r.crop.indexOf('(')>-1 ? ' ' + r.crop.slice(r.crop.indexOf('(')) : '') : r.crop;
+      return {
+      id:r.id, crop:cropLabel, market:r.market, price:'\u20b9'+r.price.toLocaleString('en-IN'),
+      changeLabel: (r.trend==='up'?'\u25b2 ':r.trend==='down'?'\u25bc ':'\u2014 ') + Math.abs(r.change) + '%',
+      isUp:r.trend==='up', isDown:r.trend==='down', isFlat:r.trend==='flat',
+      onOpen: () => this.setState({selectedMarketRow:r.id}),
+    };});
+    const selMktObj = MARKET_ROWS.find(r=>r.id===st.selectedMarketRow);
+    const selMktCropObj = selMktObj ? CROPS.find(c=>c.id===selMktObj.cropId) : null;
+    const selectedMarketRow = selMktObj ? {
+      crop: selMktCropObj ? this.localized(selMktCropObj) : selMktObj.crop, market:selMktObj.market, price:'\u20b9'+selMktObj.price.toLocaleString('en-IN'),
+      history: [40,55,48,62,58,70,65].map(h=>({h})),
+      nearby: MARKET_ROWS.filter(r=>r.crop===selMktObj.crop && r.id!==selMktObj.id).map(r=>({market:r.market, price:'\u20b9'+r.price.toLocaleString('en-IN')})),
+      onClose: () => this.setState({selectedMarketRow:null}),
+    } : null;
+
+    // ---------- Weather data ----------
+    const condLabel = {sunny:{en:'Sunny',te:'ఎండ',hi:'धूप'}, cloudy:{en:'Cloudy',te:'మేఘావృతం',hi:'बादल'}, rainy:{en:'Rainy',te:'వర్షం',hi:'बारिश'}, partly:{en:'Partly Cloudy',te:'పాక్షిక మేఘావృతం',hi:'आंशिक बादल'}};
+    const forecast = FORECAST.map(f => ({day:f.day, high:f.high, low:f.low, isSunny:f.cond==='sunny', isCloudy:f.cond==='cloudy', isRainy:f.cond==='rainy', isPartly:f.cond==='partly'}));
+    const advisories = WEATHER_ADVISORY.map(a => ({text:this.localized(a)}));
+
+    // ---------- Settings data ----------
+    const cropNamesJoined = st.profile.crops.map(id => this.localized(CROPS.find(c=>c.id===id))).join(', ') || '\u2014';
+    const settingsLanguages = LANGUAGES.map(l => ({code:l.code, native:l.native, en:l.en, isSelected:l.code===lang, bgColor:l.code===lang?'#F5F3FF':'#FFFFFF', borderColor:l.code===lang?'#7C3AED':'#E5E7EB', onSelect: () => this.setState({language:l.code})}));
+    const notificationsList = [
+      {key:'weather', label:t('weatherAlerts'), isOn: st.notifications.weather},
+      {key:'prices', label:t('priceAlerts'), isOn: st.notifications.prices},
+      {key:'schemes', label:t('schemeUpdates'), isOn: st.notifications.schemes},
+    ].map(n => ({...n, onToggle: () => this.setState(s=>({notifications:{...s.notifications, [n.key]: !s.notifications[n.key]}}))}));
+
+    const navBase = [
+      {key:'chat', label:t('navChat')}, {key:'schemes', label:t('navSchemes')}, {key:'calendar', label:t('navCalendar')}, {key:'prices', label:t('navPrices')}, {key:'weather', label:t('navWeather')}, {key:'settings', label:t('navSettings')},
+    ];
+    const nav = {};
+    navBase.forEach(n => { const active = st.screen===n.key; nav[n.key] = {label:n.label, isActive: active, bgColor: active?'#F5F3FF':'transparent', textColor: active?'#7C3AED':'#4B5563', onNavigate: () => this.setState({screen:n.key})}; });
+
+    const screenTitleKey = {chat:'navChat', schemes:'schemesTitle', calendar:'calendarTitle', prices:'pricesTitle', weather:'weatherTitle', settings:'settingsTitle'}[st.screen] || 'navChat';
+    const currentLangObj = LANGUAGES.find(l=>l.code===lang) || LANGUAGES[0];
+
+    const shellData = {
+      strings: { screenTitle: t(screenTitleKey), currentLanguageNative: currentLangObj.native, chatSubGreeting:t('chatSubGreeting'), typeMessage:t('typeMessage'), listening:t('listening'),
+        schemesTitle:t('schemesTitle'), viewDetails:t('viewDetails'), benefitLabel:t('benefitLabel'), eligibilityLabel:t('eligibilityLabel'), howToApplyLabel:t('howToApplyLabel'), documentsLabel:t('documentsLabel'), helplineLabel:t('helplineLabel'), call:t('call'), backLabel:t('backLabel'),
+        calendarTitle:t('calendarTitle'), calendarSub:t('calendarSub'),
+        pricesTitle:t('pricesTitle'), searchPlaceholder:t('searchPlaceholder'), perQuintal:t('perQuintal'), lastUpdated:t('lastUpdated'), nearbyMarkets:t('nearbyMarkets'),
+        weatherTitle:t('weatherTitle'), humidityLabel:t('humidityLabel'), windLabel:t('windLabel'), forecastTitle:t('forecastTitle'), advisoryTitle:t('advisoryTitle'),
+        settingsTitle:t('settingsTitle'), profileSection:t('profileSection'), languageSection:t('languageSection'), accessibilitySection:t('accessibilitySection'), notificationsSection:t('notificationsSection'), helpSection:t('helpSection'), aboutSection:t('aboutSection'), editProfile:t('editProfile'), callHelpline:t('callHelpline'), replayOnboarding:t('replayOnboarding'), poweredBy:t('poweredBy'), version:t('version'),
+        textSizeLabel:t('textSizeLabel'), textNormal:t('textNormal'), textLarge:t('textLarge'), textXLarge:t('textXLarge'), highContrastLabel:t('highContrastLabel'), highContrastSub:t('highContrastSub'), voiceAssistLabel:t('voiceAssistLabel'), voiceAssistSub:t('voiceAssistSub'), appName:t('appName') },
+      nav,
+      isChat: st.screen==='chat', isSchemes: st.screen==='schemes', isCalendar: st.screen==='calendar', isPrices: st.screen==='prices', isWeather: st.screen==='weather', isSettings: st.screen==='settings',
+      chat: { messages, typing: st.chat.typing, draft: st.chat.draft, listening: st.chat.listening, quickActions,
+        micBg: st.chat.listening ? '#EF4444' : '#F3F4F6', micColor: st.chat.listening ? '#FFFFFF' : '#374151',
+        onDraftChange: (e) => this.setState(s=>({chat:{...s.chat, draft:e.target.value}})),
+        onSend: () => this.sendMessage(), onToggleMic: () => this.toggleMic(),
+        onDraftKeyDown: (e) => { if (e.key==='Enter') this.sendMessage(); } },
+      schemes: { filters: schemeFilters, list: filteredSchemes, selected: selectedScheme, hasSelection: !!selectedScheme, noSelection: !selectedScheme },
+      calendar: { crops: calendarCrops, stages },
+      prices: { search: st.priceSearch, onSearchChange: (e)=>this.setState({priceSearch:e.target.value}), rows: priceRows, selected: selectedMarketRow, hasSelection: !!selectedMarketRow, noSelection: !selectedMarketRow },
+      weather: { location:'Guntur, Andhra Pradesh', temp:31, conditionLabel: this.localized(condLabel.partly), humidity:68, wind:12,
+        hasAlert:true, alertText: this.localized(WEATHER_ALERT), forecast, advisories },
+      settings: { profileName: st.profile.name || '\u2014', profileLocation: (st.profile.district? st.profile.district+', ':'') + (st.profile.state==='AP'?t('stateAP'):st.profile.state==='TS'?t('stateTS'):(st.profile.state||'\u2014')),
+        profileCrops: cropNamesJoined, profileLand: st.profile.landSize || '\u2014',
+        onEditProfile: () => this.setState({onboardingReturnTo:'settings', onboardingStep:2, screen:'onboarding'}),
+        languages: settingsLanguages, textSizeOptions, isHighContrast: st.profile.highContrast, onToggleHighContrast: () => this.setState(s=>({profile:{...s.profile, highContrast:!s.profile.highContrast}})),
+        isVoiceAssist: st.profile.voiceAssist, onToggleVoiceAssist: () => this.setState(s=>({profile:{...s.profile, voiceAssist:!s.profile.voiceAssist}})),
+        notifications: notificationsList.map(n => ({...n, trackBg: n.isOn?'#7C3AED':'#E5E7EB', knobLeft: n.isOn?'22px':'2px'})), helpline:'1800-180-1551',
+        highContrastTrackBg: st.profile.highContrast ? '#7C3AED' : '#E5E7EB', highContrastKnobLeft: st.profile.highContrast ? '22px' : '2px',
+        voiceAssistTrackBg: st.profile.voiceAssist ? '#7C3AED' : '#E5E7EB', voiceAssistKnobLeft: st.profile.voiceAssist ? '22px' : '2px',
+        onReplayOnboarding: () => this.setState({onboardingReturnTo:'chat', onboardingStep:0, screen:'onboarding'}) },
+    };
+    const shellActions = {};
+
+    return {
+      fontScaleMultiplier, isDesktopMode, isMobileMode: !isDesktopMode, isOnboarding, isNotOnboarding: !isOnboarding,
+      desktopToggleStyle: `border:none;padding:7px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:${isDesktopMode?'#7C3AED':'transparent'};color:${isDesktopMode?'#fff':'#6B7280'};`,
+      mobileToggleStyle: `border:none;padding:7px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:${!isDesktopMode?'#7C3AED':'transparent'};color:${!isDesktopMode?'#fff':'#6B7280'};`,
+      setDesktopMode: () => this.setState({viewMode:'desktop'}),
+      setMobileMode: () => this.setState({viewMode:'mobile'}),
+      obData, obActions, shellData, shellActions,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
