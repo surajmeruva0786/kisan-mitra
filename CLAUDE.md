@@ -131,6 +131,7 @@ Building a real full-stack app from scratch:
 - **2026-08-02**: Built the real `ChatPage.jsx` — message list, quick-action chips, text input, and a Web Speech API mic button, wired to `POST /api/chat`. Quick-action buttons send the localized button label itself as the chat message (e.g. Telugu "ఈరోజు వాతావరణం") rather than a fixed English phrase, since the backend's intent regexes already match the relevant en/te/hi keywords — this keeps the visible chat bubble true to what the user "asked" in their own language while still hitting the right grounded intent. Verified via build; live runtime behavior not visually confirmed (no browser tool available this session).
 - **2026-08-02**: Built the real `SchemesPage.jsx` — level filter pills (all/central/AP/TS) over a card grid from `GET /api/schemes`, tapping a card loads the full detail (benefit/eligibility/numbered how-to-apply steps/required documents/tap-to-call helpline) from `GET /api/schemes/:id`. Verified via build.
 - **2026-08-02**: Built the real `CalendarPage.jsx` — crop picker (defaults to the farmer's first onboarding crop) over a numbered stage timeline from `GET /api/crops/:cropId/calendar`. Verified via build.
+- **2026-08-02**: Built the real `PricesPage.jsx` — debounced (250ms) search over `GET /api/prices`, trend-colored price cards, tap-through detail view with nearby-market comparison from `GET /api/prices/:id`. Verified via build.
 
 ---
 
