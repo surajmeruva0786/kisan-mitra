@@ -9,11 +9,10 @@
 
 Kisan-Mitra = AI chatbot for Indian farmers. Multilingual (Hindi/English + regional), answers on govt schemes, crop advisory, market prices, farming practices. Goal: bridge digital divide for rural/smallholder farmers who lack real-time agronomic/policy info.
 
-Two source materials define this project:
-1. **Research paper** (in this repo, IEEE TENCON 2025) — theoretical/architectural vision: "GAT" model.
-2. **Live GitHub repo** (JuliusR8ll/Kisan-Mitra) — actual shipped implementation, simpler PaLM-based chatbot.
-
-These two are related but NOT identical in sophistication — paper describes an ambitious custom transformer; repo is a more practical PaLM API wrapper. Treat paper as research/vision layer, repo as current implementation layer.
+Three source materials define this project, in increasing order of relevance to what's actually in this repo today:
+1. **Research paper** (in this repo, IEEE TENCON 2025) — theoretical/architectural vision: the "GAT" model. See below.
+2. **Old external GitHub repo** (JuliusR8ll/Kisan-Mitra) — a *different, earlier* prototype (simple PaLM-wrapper React SPA). Summarized below for historical context only; none of its code is in this repo.
+3. **This repo's actual implementation** — a full-stack app (`backend/` + `frontend/`) built from scratch, described in "Current Implementation" below. This is what to read/run/extend for any real work on the project.
 
 ---
 
@@ -93,9 +92,13 @@ Existing agri-chatbots (Krushi, AgriAid, FARMER'S ASSISTANT, AgroBot, SMART KISA
 
 ---
 
-## Gap Between Paper and Repo (important for future work)
+## Gap Between Paper and the Old External Repo (historical context only)
 
-| Aspect | Paper (GAT) | Repo (current) |
+This table describes the *old* JuliusR8ll/Kisan-Mitra prototype mentioned above — kept for
+historical context, since none of its code is in this repo. **For the gap that actually matters
+now, see "Gap Between Paper and This Implementation" below**, which describes what's really here.
+
+| Aspect | Paper (GAT) | Old external repo |
 |---|---|---|
 | Model | Custom domain-trained transformer w/ AgriAttention | Google PaLM (general LLM API) |
 | Languages | 12 Indian languages + code-mix | Hindi + English only |
@@ -103,17 +106,33 @@ Existing agri-chatbots (Krushi, AgriAid, FARMER'S ASSISTANT, AgroBot, SMART KISA
 | Data | KCC dataset + augmentation pipeline | Not evident in repo |
 | Frontend | Web/mobile/offline-planned | React SPA on Vercel, Docker for self-host |
 
-If asked to "implement the paper" or "close the gap," this table is the punch list: fine-tuning/custom model work, expanding language support, and building real scheme-data grounding are the big unshipped pieces.
-
 ---
 
-## Current Build — Full-Stack Rebuild (in progress)
+## Current Implementation (this repo)
 
-The `kisan-mitra-frontend/` directory holds a **Claude Design Sync prototype** (`.dc.html` + `support.js`), not deployable app source — it needs its own runtime and can't be built with Vite. It's kept as the design reference (branding, copy, all 12-language strings, mock domain data) but is not what ships.
+The `kisan-mitra-frontend/` directory holds a **Claude Design Sync prototype** (`.dc.html` + `support.js`), not deployable app source — it needs its own runtime and can't be built with Vite. It was used as the design reference (branding, copy, all 12-language strings, mock domain data) while building the real app below, and is kept around for that reason, but it is not what ships.
 
-Building a real full-stack app from scratch:
-- `backend/` — Node.js + Express REST API (`npm install && npm run dev`, port 4000)
-- `frontend/` — React + Vite + Tailwind SPA (to be added)
+**What ships**, both fully built and wired end-to-end (see `README.md` for setup/run instructions):
+- `backend/` — Node.js + Express REST API (port 4000). Routes: `/api/schemes`, `/api/crops`, `/api/crops/:cropId/calendar`, `/api/prices`, `/api/weather`, `/api/languages`, `/api/chat`. Chat is grounded on real structured data (never invents scheme amounts/prices), with an optional pluggable Gemini LLM for more natural phrasing of the same grounded facts. `npm test` runs a 9-case smoke suite.
+- `frontend/` — React + Vite + Tailwind v4 SPA. Onboarding (5 steps) → app shell with 6 screens (Chat, Schemes, Crop Calendar, Market Prices, Weather, Settings), all wired to the real backend, profile persisted to `localStorage`, 3 languages (en/te/hi) fully localized with 9 more selectable at the nav level.
+
+**Known gaps / not yet done:**
+- No live browser QA was possible this session (no Chrome extension available) — UI correctness is verified by build success + code review only. Recommend a manual pass in an actual browser before considering the UI production-ready.
+- No deployment config yet (Vercel/Docker) — currently dev-only (`npm run dev` in both `backend/` and `frontend/`).
+- Chat history isn't persisted across reloads (by design, matching the source prototype) — could be added if wanted.
+- Full localization (all 12 languages, not just en/te/hi) is unstarted — see the updated gap table below.
+
+### Gap Between Paper and This Implementation
+
+| Aspect | Paper (GAT) | This implementation |
+|---|---|---|
+| Model | Custom domain-trained transformer w/ AgriAttention | Rule-based grounded responder by default; optional pluggable Gemini for phrasing — no custom-trained model |
+| Languages | 12 Indian languages + code-mix | 3 fully localized (en/te/hi, incl. romanized Hindi keyword matching) + 9 more nav-only |
+| Grounding | Structured triples from scheme PDFs fused at training time | Structured JS data modules (schemes/crops/prices/weather) fused into every reply at request time — same idea, simpler mechanism, real and working today |
+| Data | KCC dataset + augmentation pipeline | Hand-authored scheme/crop/price/weather data (ported from the design prototype); no KCC dataset ingestion |
+| Frontend | Web/mobile/offline-planned | React SPA (web only, no offline mode yet) |
+
+Closing the model-sophistication gap (fine-tuning a real domain model, KCC dataset ingestion, full 12-language coverage) remains future work; the grounding *architecture* the paper describes is now real and running, just implemented more simply than a custom transformer.
 
 ### Change Log
 - **2026-08-02**: Scaffolded `backend/` — Express app, CORS, dotenv, `/api/health`, error handler, `.env.example`. Verified server boots and responds on port 4000.
@@ -137,6 +156,7 @@ Building a real full-stack app from scratch:
 - **2026-08-02**: Closed a gap where the `highContrast` and `voiceAssist` profile toggles were being saved but doing nothing. `ProfileContext` now toggles a `high-contrast` class on `<html>` (with matching CSS overrides in `index.css` for darker muted text/borders) whenever `highContrast` is on, and `ChatPage`'s mic button now only renders when `voiceAssist` is on. Verified via build.
 - **2026-08-02**: Added `frontend/.env.example` documenting `VITE_API_BASE_URL` (only needed for production builds pointed at a deployed backend — local dev uses the Vite proxy from step 8 and needs no env var at all) and added `.env` to `frontend/.gitignore` (Vite's default template only ignored `*.local`, not plain `.env`).
 - **2026-08-02**: Rewrote the root `README.md` (previously just a title) — architecture diagram, setup steps for both `backend/` and `frontend/`, env var tables, and a note on which languages are fully localized vs nav-only.
+- **2026-08-02**: Restructured this file's top-level sections to reflect that the full-stack rebuild is the primary implementation now, not a work-in-progress alongside the paper/old-repo summaries: renamed "Current Build" → "Current Implementation (this repo)" with a "what ships / known gaps" summary, relabeled the old paper-vs-JuliusR8ll-repo gap table as historical context, and added a new "Gap Between Paper and This Implementation" table reflecting the real current state.
 
 ---
 
