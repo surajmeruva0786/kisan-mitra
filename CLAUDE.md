@@ -117,6 +117,7 @@ Building a real full-stack app from scratch:
 
 ### Change Log
 - **2026-08-02**: Scaffolded `backend/` — Express app, CORS, dotenv, `/api/health`, error handler, `.env.example`. Verified server boots and responds on port 4000.
+- **2026-08-02**: Ported domain data from the design prototype into `backend/src/data/` — languages (12), crops + crop calendars, govt schemes (structured facts for grounding), market price rows, weather/forecast/advisories. All localized `{en, te, hi}` strings preserved verbatim. This is the "schema-aware grounding" data the paper describes, now living server-side instead of hardcoded in a frontend prototype.
 
 ---
 
