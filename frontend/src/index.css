@@ -32,3 +32,16 @@ body {
 .fs-scale {
   font-size: calc(1em * var(--fs-mult));
 }
+
+/* High-contrast accessibility mode, toggled via the `high-contrast` class on <html>. */
+html.high-contrast body {
+  color: #000000;
+}
+html.high-contrast .text-gray-400,
+html.high-contrast .text-gray-500 {
+  color: #1f2937 !important;
+}
+html.high-contrast .border-gray-100,
+html.high-contrast .border-gray-200 {
+  border-color: rgba(0, 0, 0, 0.35) !important;
+}

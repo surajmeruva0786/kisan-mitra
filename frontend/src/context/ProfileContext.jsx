@@ -38,6 +38,10 @@ export function ProfileProvider({ children }) {
     document.documentElement.style.setProperty('--fs-mult', mult);
   }, [profile.textSize]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle('high-contrast', profile.highContrast);
+  }, [profile.highContrast]);
+
   const updateProfile = (patch) => setProfile((prev) => ({ ...prev, ...patch }));
 
   const value = useMemo(() => ({ profile, setProfile, updateProfile }), [profile]);

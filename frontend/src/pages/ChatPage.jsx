@@ -101,16 +101,18 @@ export default function ChatPage() {
       </div>
 
       <div className="flex items-center gap-2 border-t border-gray-200 p-3">
-        <button
-          type="button"
-          onClick={toggleMic}
-          aria-label={t('listening')}
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full cursor-pointer ${
-            listening ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700'
-          }`}
-        >
-          🎤
-        </button>
+        {profile.voiceAssist && (
+          <button
+            type="button"
+            onClick={toggleMic}
+            aria-label={t('listening')}
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full cursor-pointer ${
+              listening ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700'
+            }`}
+          >
+            🎤
+          </button>
+        )}
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
