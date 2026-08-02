@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { useProfile } from '../context/ProfileContext.jsx';
 import { LANGUAGES } from '../i18n/languages.js';
@@ -29,7 +29,9 @@ export default function OnboardingPage() {
   const { t, language, setLanguage } = useLanguage();
   const { profile, updateProfile } = useProfile();
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
+  const location = useLocation();
+  const returnTo = location.state?.returnTo || '/';
+  const [step, setStep] = useState(location.state?.step ?? 0);
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function OnboardingPage() {
   const back = () => setStep((s) => Math.max(0, s - 1));
   const finish = () => {
     updateProfile({ onboardingComplete: true });
-    navigate('/');
+    navigate(returnTo);
   };
 
   const toggleCrop = (id) => {
