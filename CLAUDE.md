@@ -107,6 +107,19 @@ If asked to "implement the paper" or "close the gap," this table is the punch li
 
 ---
 
+## Current Build — Full-Stack Rebuild (in progress)
+
+The `kisan-mitra-frontend/` directory holds a **Claude Design Sync prototype** (`.dc.html` + `support.js`), not deployable app source — it needs its own runtime and can't be built with Vite. It's kept as the design reference (branding, copy, all 12-language strings, mock domain data) but is not what ships.
+
+Building a real full-stack app from scratch:
+- `backend/` — Node.js + Express REST API (`npm install && npm run dev`, port 4000)
+- `frontend/` — React + Vite + Tailwind SPA (to be added)
+
+### Change Log
+- **2026-08-02**: Scaffolded `backend/` — Express app, CORS, dotenv, `/api/health`, error handler, `.env.example`. Verified server boots and responds on port 4000.
+
+---
+
 ## Working Agreement
 
 - Every change (code, docs, config) → update this CLAUDE.md with what changed and why → commit → push. Every single time, no batching multiple changes into one commit.
