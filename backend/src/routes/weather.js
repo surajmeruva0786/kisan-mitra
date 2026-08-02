@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
   res.json({
     location: CURRENT.location,
     temp: CURRENT.temp,
+    condition: CURRENT.condition,
     conditionLabel: localize(CONDITION_LABEL[CURRENT.condition], lang),
     humidity: CURRENT.humidity,
     wind: CURRENT.wind,

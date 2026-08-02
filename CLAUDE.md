@@ -132,6 +132,7 @@ Building a real full-stack app from scratch:
 - **2026-08-02**: Built the real `SchemesPage.jsx` — level filter pills (all/central/AP/TS) over a card grid from `GET /api/schemes`, tapping a card loads the full detail (benefit/eligibility/numbered how-to-apply steps/required documents/tap-to-call helpline) from `GET /api/schemes/:id`. Verified via build.
 - **2026-08-02**: Built the real `CalendarPage.jsx` — crop picker (defaults to the farmer's first onboarding crop) over a numbered stage timeline from `GET /api/crops/:cropId/calendar`. Verified via build.
 - **2026-08-02**: Built the real `PricesPage.jsx` — debounced (250ms) search over `GET /api/prices`, trend-colored price cards, tap-through detail view with nearby-market comparison from `GET /api/prices/:id`. Verified via build.
+- **2026-08-02**: Built the real `WeatherPage.jsx` — current conditions card, alert banner, 7-day forecast strip, localized advisories, from `GET /api/weather`. While wiring it up, found `GET /api/weather` was only returning a localized `conditionLabel` string for current conditions with no raw `condition` key to pick an icon from (the forecast array had one, current conditions didn't) — added `condition` to that response. Re-ran the backend smoke suite (still 9/9) and the frontend build after the fix.
 
 ---
 
